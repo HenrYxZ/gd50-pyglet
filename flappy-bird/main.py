@@ -8,7 +8,7 @@ import resources
 HEIGHT = 288
 WIDTH = 512
 
-window = pyglet.window.Window(WIDTH, HEIGHT)
+window = pyglet.window.Window(WIDTH, HEIGHT, caption="Fifty Bird")
 main_batch = pyglet.graphics.Batch()
 # Sprites
 background = pyglet.sprite.Sprite(resources.bg_img, batch=main_batch)
@@ -29,6 +29,7 @@ def update(dt):
     ground_scroll = (ground_scroll + GROUND_SCROLL_SPEED * dt) % WIDTH
     background.x = -bg_scroll
     ground.x = -ground_scroll
+    bird.update(dt)
 
 def init():
     bird.x = WIDTH / 2
