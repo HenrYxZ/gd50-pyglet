@@ -11,3 +11,6 @@ pyglet.resource.reindex()
 
 bg_img = pyglet.resource.image("background.png")
 ground_img = pyglet.resource.image("ground.png")
+bird_img = pyglet.resource.image("bird.png")
+
+center_image(bird_img)

@@ -2,6 +2,7 @@ import pyglet
 
 
 # Local imports
+from bird import Bird
 import resources
 
 HEIGHT = 288
@@ -12,6 +13,8 @@ main_batch = pyglet.graphics.Batch()
 # Sprites
 background = pyglet.sprite.Sprite(resources.bg_img, batch=main_batch)
 ground = pyglet.sprite.Sprite(resources.ground_img, batch=main_batch)
+bird = Bird(batch=main_batch)
+
 # Variables
 bg_scroll = 0
 ground_scroll = 0
@@ -28,6 +31,8 @@ def update(dt):
     ground.x = -ground_scroll
 
 def init():
+    bird.x = WIDTH / 2
+    bird.y = HEIGHT / 2
     pyglet.clock.schedule_interval(update, REFRESH_RATE)
     pyglet.app.run()
 
