@@ -1,8 +1,10 @@
 import pyglet
-from pyglet.window import key
+import random
 
 # Local imports
 from bird import Bird, keys
+from constants import *
+from pipe import Pipe
 import resources
 
 HEIGHT = 288
@@ -19,19 +21,37 @@ bird = Bird(batch=main_batch)
 # Variables
 bg_scroll = 0
 ground_scroll = 0
-BG_SCROLL_SPEED = 30
-GROUND_SCROLL_SPEED = 2 * BG_SCROLL_SPEED
-BG_LOOP_POINT = 413
-REFRESH_RATE = 1 / 60.0
+pipes = []
+spawn_timer = 0
+
+
+def spawn_pipe():
+    pipe = Pipe(batch=main_batch)
+    pipe.x = WIDTH
+    pipe.y = random.uniform(10, HEIGHT * (3 / 4))
+    pipes.append(pipe)
 
 
 def update(dt):
-    global bg_scroll, ground_scroll
+    global bg_scroll, ground_scroll, pipes, spawn_timer
+    # Parallax
     bg_scroll = (bg_scroll + BG_SCROLL_SPEED * dt) % BG_LOOP_POINT
     ground_scroll = (ground_scroll + GROUND_SCROLL_SPEED * dt) % WIDTH
     background.x = -bg_scroll
     ground.x = -ground_scroll
+    # Update objects
     bird.update(dt)
+    for pipe in pipes:
+        pipe.update(dt)
+    # only keep pipes that appear on screen
+    for to_remove in [pipe for pipe in pipes if pipe.dead]:
+        to_remove.delete()
+        pipes.remove(to_remove)
+    # spawn new pipes
+    spawn_timer += dt
+    if spawn_timer > 2:
+        spawn_pipe()
+        spawn_timer = 0
 
 
 def init():

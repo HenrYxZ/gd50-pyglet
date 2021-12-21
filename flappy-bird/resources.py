@@ -12,5 +12,7 @@ pyglet.resource.reindex()
 bg_img = pyglet.resource.image("background.png")
 ground_img = pyglet.resource.image("ground.png")
 bird_img = pyglet.resource.image("bird.png")
+pipe_img = pyglet.resource.image("pipe.png")
 
 center_image(bird_img)
+pipe_img.anchor_y = pipe_img.height
