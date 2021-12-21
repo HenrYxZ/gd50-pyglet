@@ -1,14 +1,15 @@
 import pyglet
-
+from pyglet.window import key
 
 # Local imports
-from bird import Bird
+from bird import Bird, keys
 import resources
 
 HEIGHT = 288
 WIDTH = 512
 
 window = pyglet.window.Window(WIDTH, HEIGHT, caption="Fifty Bird")
+window.push_handlers(keys)
 main_batch = pyglet.graphics.Batch()
 # Sprites
 background = pyglet.sprite.Sprite(resources.bg_img, batch=main_batch)
@@ -23,6 +24,7 @@ GROUND_SCROLL_SPEED = 2 * BG_SCROLL_SPEED
 BG_LOOP_POINT = 413
 REFRESH_RATE = 1 / 60.0
 
+
 def update(dt):
     global bg_scroll, ground_scroll
     bg_scroll = (bg_scroll + BG_SCROLL_SPEED * dt) % BG_LOOP_POINT
@@ -30,6 +32,7 @@ def update(dt):
     background.x = -bg_scroll
     ground.x = -ground_scroll
     bird.update(dt)
+
 
 def init():
     bird.x = WIDTH / 2
