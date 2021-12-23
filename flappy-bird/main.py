@@ -23,11 +23,12 @@ bg_scroll = 0
 ground_scroll = 0
 pipe_pairs = []
 spawn_timer = 0
+last_y = random.uniform(10, HEIGHT * (3 / 4))
 
 
 def spawn_pipe():
     x = WIDTH
-    y = random.uniform(10, HEIGHT * (3 / 4))
+    y = last_y + random.uniform(-PIPE_HEIGHT_VARY, PIPE_HEIGHT_VARY)
     pipe_pair = PipePair(x, y, batch=main_batch)
     pipe_pairs.append(pipe_pair)
 
