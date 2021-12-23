@@ -4,7 +4,7 @@ import random
 # Local imports
 from bird import Bird, keys
 from constants import *
-from pipe import Pipe
+from pipe_pair import PipePair
 import resources
 
 HEIGHT = 288
@@ -21,19 +21,19 @@ bird = Bird(batch=main_batch)
 # Variables
 bg_scroll = 0
 ground_scroll = 0
-pipes = []
+pipe_pairs = []
 spawn_timer = 0
 
 
 def spawn_pipe():
-    pipe = Pipe(batch=main_batch)
-    pipe.x = WIDTH
-    pipe.y = random.uniform(10, HEIGHT * (3 / 4))
-    pipes.append(pipe)
+    x = WIDTH
+    y = random.uniform(10, HEIGHT * (3 / 4))
+    pipe_pair = PipePair(x, y, batch=main_batch)
+    pipe_pairs.append(pipe_pair)
 
 
 def update(dt):
-    global bg_scroll, ground_scroll, pipes, spawn_timer
+    global bg_scroll, ground_scroll, pipe_pairs, spawn_timer
     # Parallax
     bg_scroll = (bg_scroll + BG_SCROLL_SPEED * dt) % BG_LOOP_POINT
     ground_scroll = (ground_scroll + GROUND_SCROLL_SPEED * dt) % WIDTH
@@ -41,12 +41,12 @@ def update(dt):
     ground.x = -ground_scroll
     # Update objects
     bird.update(dt)
-    for pipe in pipes:
-        pipe.update(dt)
+    for pipe_pair in pipe_pairs:
+        pipe_pair.update(dt)
     # only keep pipes that appear on screen
-    for to_remove in [pipe for pipe in pipes if pipe.dead]:
+    for to_remove in [pipe_pair for pipe_pair in pipe_pairs if pipe_pair.dead]:
         to_remove.delete()
-        pipes.remove(to_remove)
+        pipe_pairs.remove(to_remove)
     # spawn new pipes
     spawn_timer += dt
     if spawn_timer > 2:
