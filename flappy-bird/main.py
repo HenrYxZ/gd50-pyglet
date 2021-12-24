@@ -24,6 +24,7 @@ ground_scroll = 0
 pipe_pairs = []
 spawn_timer = 0
 last_y = random.uniform(10, HEIGHT * (3 / 4))
+scrolling = True
 
 
 def spawn_pipe():
@@ -34,7 +35,9 @@ def spawn_pipe():
 
 
 def update(dt):
-    global bg_scroll, ground_scroll, pipe_pairs, spawn_timer
+    global bg_scroll, ground_scroll, pipe_pairs, scrolling, spawn_timer
+    if not scrolling:
+        return
     # Parallax
     bg_scroll = (bg_scroll + BG_SCROLL_SPEED * dt) % BG_LOOP_POINT
     ground_scroll = (ground_scroll + GROUND_SCROLL_SPEED * dt) % WIDTH
@@ -44,6 +47,15 @@ def update(dt):
     bird.update(dt)
     for pipe_pair in pipe_pairs:
         pipe_pair.update(dt)
+        # Check collision
+        if (
+            bird.collides(pipe_pair.pipes['top']) or
+            bird.collides(pipe_pair.pipes['bottom'])
+        ):
+            scrolling = False
+        # Remove pipe pairs offscreen
+        if pipe_pair.x < -pipe_pair.width:
+            pipe_pair.dead = True
     # only keep pipes that appear on screen
     for to_remove in [pipe_pair for pipe_pair in pipe_pairs if pipe_pair.dead]:
         to_remove.delete()
