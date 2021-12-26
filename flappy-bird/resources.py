@@ -1,3 +1,4 @@
+from constants import FLAPPY_FONT, SMALL_FONT
 import pyglet
 
 
@@ -16,3 +17,8 @@ pipe_img = pyglet.resource.image("pipe.png")
 
 center_image(bird_img)
 pipe_img.anchor_y = pipe_img.height
+
+pyglet.resource.add_font("font.ttf")
+pyglet.resource.add_font("flappy.ttf")
+pyglet.font.load(FLAPPY_FONT)
+pyglet.font.load(SMALL_FONT)
