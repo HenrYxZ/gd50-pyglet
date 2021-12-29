@@ -8,7 +8,7 @@ from pipe_pair import PipePair
 
 
 class PlayState(BaseState):
-    def __init__(self, width, height, batch):
+    def __init__(self, width, height, batch,  state_machine):
         super().__init__()
         self.bird = Bird(batch=batch)
         self.bird.x = width / 2
@@ -18,8 +18,7 @@ class PlayState(BaseState):
         self.last_y = random.uniform(10, height * (3 / 4))
         self.width = width
         self.batch = batch
-        # This is a reference to the state machine change method
-        self.change_state = None
+        self.state_machine = state_machine
         self.batch = batch
 
     def spawn_pipe(self):
@@ -35,8 +34,7 @@ class PlayState(BaseState):
             self.spawn_pipe()
             self.spawn_timer = 0
 
-        # Update objects
-        self.bird.update(dt)
+        # Update pipe pairs
         for pair in self.pipe_pairs:
             pair.update(dt)
             # Check collision
@@ -44,7 +42,7 @@ class PlayState(BaseState):
                 self.bird.collides(pair.pipes['top']) or
                 self.bird.collides(pair.pipes['bottom'])
             ):
-                self.change_state(TITLE_STATE)
+                self.state_machine.change(TITLE_STATE)
             # Remove pipe pairs offscreen
             if pair.x < -pair.width:
                 pair.dead = True
@@ -53,6 +51,14 @@ class PlayState(BaseState):
         for to_remove in [pair for pair in self.pipe_pairs if pair.dead]:
             to_remove.delete()
             self.pipe_pairs.remove(to_remove)
+
+        # Update bird
+        self.bird.update(dt)
+
+        # Check falling to the ground
+        if self.bird.y <= GROUND_HEIGHT:
+            self.state_machine.change(TITLE_STATE)
+
 
     def render(self):
         self.batch.draw()

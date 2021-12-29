@@ -1,18 +1,19 @@
 import pyglet
+from pyglet.window import key
 
 # Local imports
-from bird import keys
+from bird import keys as bird_keys
 from constants import *
 from play_state import PlayState
 from state_machine import StateMachine
 from title_state import TitleScreenState
+from title_state import keys as title_keys
 import resources
 
 HEIGHT = 288
 WIDTH = 512
 
 window = pyglet.window.Window(WIDTH, HEIGHT, caption="Fifty Bird")
-window.push_handlers(keys)
 play_batch = pyglet.graphics.Batch()
 title_batch = pyglet.graphics.Batch()
 main_batch = pyglet.graphics.Batch()
@@ -25,14 +26,17 @@ bg_scroll = 0
 ground_scroll = 0
 
 # State Machine
-play_state = PlayState(WIDTH, HEIGHT, play_batch)
-title_state = TitleScreenState(WIDTH, HEIGHT, title_batch)
-window.push_handlers(on_key_press=title_state.handle_key_event)
+on_key_press = lambda symbol, modifiers: None
 state_machine = StateMachine({
-    PLAY_STATE: play_state, TITLE_STATE: title_state
+    PLAY_STATE: lambda: PlayState(
+        WIDTH, HEIGHT, play_batch, state_machine
+    ),
+    TITLE_STATE: lambda: TitleScreenState(
+        WIDTH, HEIGHT, title_batch, state_machine
+    )
 })
-play_state.change_state = state_machine.change
-title_state.change_state = state_machine.change
+window.push_handlers(bird_keys)
+window.push_handlers(title_keys)
 state_machine.change(TITLE_STATE)
 
 
