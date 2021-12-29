@@ -5,7 +5,9 @@ from pyglet.window import key
 from base_state import BaseState
 from constants import FLAPPY_FONT, PLAY_STATE
 
+
 keys = key.KeyStateHandler()
+
 
 class TitleScreenState(BaseState):
     def __init__(self, width, height, batch, state_machine):

@@ -59,6 +59,5 @@ class PlayState(BaseState):
         if self.bird.y <= GROUND_HEIGHT:
             self.state_machine.change(TITLE_STATE)
 
-
     def render(self):
         self.batch.draw()

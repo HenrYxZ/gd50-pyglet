@@ -1,5 +1,4 @@
 import pyglet
-from pyglet.window import key
 
 # Local imports
 from bird import keys as bird_keys
@@ -26,7 +25,6 @@ bg_scroll = 0
 ground_scroll = 0
 
 # State Machine
-on_key_press = lambda symbol, modifiers: None
 state_machine = StateMachine({
     PLAY_STATE: lambda: PlayState(
         WIDTH, HEIGHT, play_batch, state_machine
