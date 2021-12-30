@@ -1,3 +1,4 @@
+import pyglet
 import random
 
 
@@ -5,6 +6,8 @@ from constants import *
 from bird import Bird
 from base_state import BaseState
 from pipe_pair import PipePair
+
+score_str = 'Score: {0}'
 
 
 class PlayState(BaseState):
@@ -21,6 +24,10 @@ class PlayState(BaseState):
         self.state_machine = state_machine
         self.batch = batch
         self.score = 0
+        self.score_label = pyglet.text.Label(
+            score_str.format(self.score), FLAPPY_FONT, FLAPPY_SIZE, x=8,
+            y=height-36
+        )
 
     def spawn_pipe(self):
         x = self.width
@@ -49,6 +56,7 @@ class PlayState(BaseState):
                 if pair.x + pair.width < self.bird.x:
                     pair.scored = True
                     self.score += 1
+                    self.score_label.text = score_str.format(self.score)
             # Remove pipe pairs offscreen
             if pair.x < -pair.width:
                 pair.dead = True
@@ -67,3 +75,4 @@ class PlayState(BaseState):
 
     def render(self):
         self.batch.draw()
+        self.score_label.draw()
