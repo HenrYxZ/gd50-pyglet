@@ -8,10 +8,11 @@ from base_state import BaseState
 from pipe_pair import PipePair
 
 score_str = 'Score: {0}'
+batch = pyglet.graphics.Batch()
 
 
 class PlayState(BaseState):
-    def __init__(self, width, height, batch,  state_machine):
+    def __init__(self, width, height, state_machine):
         super().__init__()
         self.bird = Bird(batch=batch)
         self.bird.x = width / 2
@@ -20,9 +21,7 @@ class PlayState(BaseState):
         self.spawn_timer = 0
         self.last_y = random.uniform(10, height * (3 / 4))
         self.width = width
-        self.batch = batch
         self.state_machine = state_machine
-        self.batch = batch
         self.score = 0
         self.score_label = pyglet.text.Label(
             score_str.format(self.score), FLAPPY_FONT, FLAPPY_SIZE, x=8,
@@ -32,7 +31,7 @@ class PlayState(BaseState):
     def spawn_pipe(self):
         x = self.width
         y = self.last_y + random.uniform(-PIPE_HEIGHT_VARY, PIPE_HEIGHT_VARY)
-        pipe_pair = PipePair(x, y, batch=self.batch)
+        pipe_pair = PipePair(x, y, batch=batch)
         self.pipe_pairs.append(pipe_pair)
 
     def update(self, dt):
@@ -74,5 +73,5 @@ class PlayState(BaseState):
             self.state_machine.change(SCORE_STATE, score=self.score)
 
     def render(self):
-        self.batch.draw()
+        batch.draw()
         self.score_label.draw()
