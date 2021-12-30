@@ -4,6 +4,8 @@ import pyglet
 from bird import keys as bird_keys
 from constants import *
 from play_state import PlayState
+from score_state import ScoreState
+from score_state import keys as score_keys
 from state_machine import StateMachine
 from title_state import TitleScreenState
 from title_state import keys as title_keys
@@ -15,6 +17,7 @@ WIDTH = 512
 window = pyglet.window.Window(WIDTH, HEIGHT, caption="Fifty Bird")
 play_batch = pyglet.graphics.Batch()
 title_batch = pyglet.graphics.Batch()
+score_batch = pyglet.graphics.Batch()
 main_batch = pyglet.graphics.Batch()
 # Sprites
 background = pyglet.sprite.Sprite(resources.bg_img, batch=main_batch)
@@ -31,10 +34,14 @@ state_machine = StateMachine({
     ),
     TITLE_STATE: lambda: TitleScreenState(
         WIDTH, HEIGHT, title_batch, state_machine
+    ),
+    SCORE_STATE: lambda: ScoreState(
+        WIDTH, HEIGHT, score_batch, state_machine
     )
 })
 window.push_handlers(bird_keys)
 window.push_handlers(title_keys)
+window.push_handlers(score_keys)
 state_machine.change(TITLE_STATE)
 
 

@@ -20,6 +20,7 @@ class PlayState(BaseState):
         self.batch = batch
         self.state_machine = state_machine
         self.batch = batch
+        self.score = 0
 
     def spawn_pipe(self):
         x = self.width
@@ -42,7 +43,12 @@ class PlayState(BaseState):
                 self.bird.collides(pair.pipes['top']) or
                 self.bird.collides(pair.pipes['bottom'])
             ):
-                self.state_machine.change(TITLE_STATE)
+                self.state_machine.change(SCORE_STATE, score=self.score)
+            # Check score
+            if not pair.scored:
+                if pair.x + pair.width < self.bird.x:
+                    pair.scored = True
+                    self.score += 1
             # Remove pipe pairs offscreen
             if pair.x < -pair.width:
                 pair.dead = True
@@ -57,7 +63,7 @@ class PlayState(BaseState):
 
         # Check falling to the ground
         if self.bird.y <= GROUND_HEIGHT:
-            self.state_machine.change(TITLE_STATE)
+            self.state_machine.change(SCORE_STATE, score=self.score)
 
     def render(self):
         self.batch.draw()

@@ -12,6 +12,7 @@ GROUND_HEIGHT = 15
 
 TITLE_STATE = 'title'
 PLAY_STATE = 'play'
+SCORE_STATE = 'score'
 
 FLAPPY_FONT = '04b_19'
 SMALL_FONT = '04b03'

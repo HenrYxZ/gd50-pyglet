@@ -16,6 +16,7 @@ class PipePair:
         self.pipes['top'] = pipe_top
         self.pipes['bottom'] = Pipe(x, y, batch=batch)
         self.dead = False
+        self.scored = False
 
     def update(self, dt):
         self.x -= PIPE_SCROLL_SPEED * dt

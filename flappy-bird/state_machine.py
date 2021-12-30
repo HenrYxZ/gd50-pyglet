@@ -17,11 +17,11 @@ class StateMachine:
         self.states = states
         self.current = BaseState()
 
-    def change(self, state_name, *args):
+    def change(self, state_name, **kwargs):
         assert(state_name in self.states)
         self.current.exit()
-        self.current = self.states[state_name](*args)
-        self.current.enter()
+        self.current = self.states[state_name]()
+        self.current.enter(**kwargs)
 
     def update(self, dt):
         self.current.update(dt)
