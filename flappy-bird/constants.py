@@ -21,3 +21,11 @@ SMALL_SIZE = 8
 MEDIUM_SIZE = 14
 FLAPPY_SIZE = 28
 HUGE_SIZE = 56
+
+MUSIC = 'music'
+SCORE = 'score'
+HURT = 'hurt'
+EXPLOSION = 'explosion'
+JUMP = 'jump'
+GLOBAL_VOLUME = 0.3
+MUSIC_VOLUME = 0.3

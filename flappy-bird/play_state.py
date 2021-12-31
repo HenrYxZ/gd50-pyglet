@@ -6,6 +6,8 @@ from constants import *
 from bird import Bird
 from base_state import BaseState
 from pipe_pair import PipePair
+from resources import sounds
+from utils import play
 
 score_str = 'Score: {0}'
 
@@ -49,7 +51,7 @@ class PlayState(BaseState):
                 self.bird.collides(pair.pipes['top']) or
                 self.bird.collides(pair.pipes['bottom'])
             ):
-                self.state_machine.change(SCORE_STATE, score=self.score)
+                self.player_lost()
             # Check score
             if not pair.scored:
                 if pair.x + pair.width < self.bird.x:
@@ -70,7 +72,12 @@ class PlayState(BaseState):
 
         # Check falling to the ground
         if self.bird.y <= GROUND_HEIGHT:
-            self.state_machine.change(SCORE_STATE, score=self.score)
+            self.player_lost()
+
+    def player_lost(self):
+        self.state_machine.change(SCORE_STATE, score=self.score)
+        play(sounds[HURT])
+        play(sounds[EXPLOSION])
 
     def render(self):
         self.batch.draw()

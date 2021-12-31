@@ -3,8 +3,10 @@ from pyglet.window import key
 
 
 # Local modules
-from constants import BB_OFFSET, GRAVITY, JUMP_SPEED
+from constants import BB_OFFSET, GRAVITY, JUMP_SPEED, JUMP
 import resources
+from resources import sounds
+from utils import play
 
 keys = key.KeyStateHandler()
 
@@ -32,6 +34,7 @@ class Bird(pyglet.sprite.Sprite):
 
         if keys[key.SPACE]:
             self.dy = JUMP_SPEED
+            play(sounds[JUMP])
 
     def collides(self, pipe):
         if self.right >= pipe.left and self.left <= pipe.right:

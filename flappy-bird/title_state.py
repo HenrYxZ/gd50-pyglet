@@ -4,7 +4,8 @@ from pyglet.window import key
 
 from base_state import BaseState
 from constants import *
-
+from resources import sounds
+from utils import play
 
 keys = key.KeyStateHandler()
 
@@ -29,3 +30,4 @@ class TitleScreenState(BaseState):
     def update(self, dt):
         if keys[key.ENTER]:
             self.state_machine.change(COUNTDOWN_STATE)
+            play(sounds[MUSIC], MUSIC_VOLUME)
