@@ -77,6 +77,10 @@ def on_key_press(symbol, _):
     if symbol == key.SPACE:
         if isinstance(state_machine.current, PlayState):
             state_machine.current.bird.jump()
+    if symbol == key.S:
+        pyglet.image.get_buffer_manager().get_color_buffer().save(
+            'screenshot.png'
+        )
 
 @window.event
 def on_mouse_press(_, __, button, ___):
