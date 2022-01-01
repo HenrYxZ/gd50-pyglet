@@ -8,8 +8,6 @@ import resources
 from resources import sounds
 from utils import play
 
-keys = key.KeyStateHandler()
-
 
 class Bird(pyglet.sprite.Sprite):
 
@@ -32,12 +30,12 @@ class Bird(pyglet.sprite.Sprite):
         self.y += self.dy
         self.reset_bounding_box()
 
-        if keys[key.SPACE]:
-            self.dy = JUMP_SPEED
-            play(sounds[JUMP])
-
     def collides(self, pipe):
         if self.right >= pipe.left and self.left <= pipe.right:
             if self.top >= pipe.bottom and self.bottom <= pipe.top:
                 return True
         return False
+
+    def jump(self):
+        self.dy = JUMP_SPEED
+        play(sounds[JUMP])

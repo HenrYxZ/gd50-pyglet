@@ -1,7 +1,7 @@
 import pyglet
+from pyglet.window import key
 
 # Local imports
-from bird import keys as bird_keys
 from constants import *
 from countdown_state import CountdownState
 from play_state import PlayState
@@ -40,7 +40,6 @@ state_machine = StateMachine({
         WIDTH, HEIGHT, state_machine
     )
 })
-window.push_handlers(bird_keys)
 window.push_handlers(title_keys)
 window.push_handlers(score_keys)
 state_machine.change(TITLE_STATE)
@@ -66,6 +65,20 @@ def on_draw():
     window.clear()
     main_batch.draw()
     state_machine.render()
+
+
+@window.event
+def on_key_press(symbol, _):
+    if symbol == key.SPACE:
+        if isinstance(state_machine.current, PlayState):
+            state_machine.current.bird.jump()
+
+
+@window.event
+def on_mouse_press(_, __, button, ___):
+    if button == pyglet.window.mouse.LEFT:
+        if isinstance(state_machine.current, PlayState):
+            state_machine.current.bird.jump()
 
 
 if __name__ == '__main__':
