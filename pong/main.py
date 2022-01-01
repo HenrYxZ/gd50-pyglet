@@ -12,6 +12,7 @@ WIDTH = 800
 HEIGHT = 600
 COLOR_WHITE = (250, 250, 250)
 COLOR_FPS = (0, 255, 0, 100)
+COLOR_BLACK = (0, 0, 0)
 FREQUENCY = 60.0
 P1_X = 20
 P1_Y = 20
@@ -142,6 +143,12 @@ def update(dt):
             handle_score(PLAYER_1)
 
 
+def draw_background():
+    shapes.Rectangle(
+        x=0, y=0, width=WIDTH, height=HEIGHT, color=COLOR_BLACK
+    ).draw()
+
+
 def draw_player(player):
     shapes.Rectangle(
         x=player.x,
@@ -168,6 +175,7 @@ def draw_ball():
 @window.event
 def on_draw():
     window.clear()
+    draw_background()
     draw_player(p1)
     draw_player(p2)
     draw_ball()
@@ -180,7 +188,7 @@ def on_draw():
         winner_label.draw()
 
 
-def handle_pause(symbol, _):
+def on_key_press(symbol, _):
     if symbol == key.ENTER:
         if current_game.state == game.PLAYING_STATE:
             current_game.state = game.PAUSE_STATE
@@ -188,9 +196,13 @@ def handle_pause(symbol, _):
             if current_game.state == game.DONE_STATE:
                 current_game.reset()
             current_game.state = game.PLAYING_STATE
+    if symbol == key.S:
+        pyglet.image.get_buffer_manager().get_color_buffer().save(
+            'screenshot.png'
+        )
 
 
 if __name__ == '__main__':
-    window.push_handlers(on_key_press=handle_pause)
+    window.push_handlers(on_key_press=on_key_press)
     pyglet.clock.schedule_interval(update, 1 / FREQUENCY)
     pyglet.app.run()
