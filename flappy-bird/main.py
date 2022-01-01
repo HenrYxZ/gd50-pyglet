@@ -17,6 +17,10 @@ WIDTH = 512
 
 window = pyglet.window.Window(WIDTH, HEIGHT, caption="Fifty Bird")
 main_batch = pyglet.graphics.Batch()
+fps_label = pyglet.text.Label(color=COLOR_FPS, font_size=FLAPPY_SIZE)
+fps_display = pyglet.window.FPSDisplay(window)
+fps_display.label = fps_label
+
 # Sprites
 background = pyglet.sprite.Sprite(resources.bg_img, batch=main_batch)
 ground = pyglet.sprite.Sprite(resources.ground_img, batch=main_batch)
@@ -65,14 +69,14 @@ def on_draw():
     window.clear()
     main_batch.draw()
     state_machine.render()
+    fps_display.draw()
 
 
-@window.event
+
 def on_key_press(symbol, _):
     if symbol == key.SPACE:
         if isinstance(state_machine.current, PlayState):
             state_machine.current.bird.jump()
-
 
 @window.event
 def on_mouse_press(_, __, button, ___):
@@ -82,4 +86,5 @@ def on_mouse_press(_, __, button, ___):
 
 
 if __name__ == '__main__':
+    window.push_handlers(on_key_press=on_key_press)
     init()

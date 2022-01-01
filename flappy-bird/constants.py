@@ -27,5 +27,7 @@ SCORE = 'score'
 HURT = 'hurt'
 EXPLOSION = 'explosion'
 JUMP = 'jump'
-GLOBAL_VOLUME = 0.3
-MUSIC_VOLUME = 0.3
+GLOBAL_VOLUME = 0.22
+MUSIC_VOLUME = 0.2
+
+COLOR_FPS = (0, 255, 0, 100)
