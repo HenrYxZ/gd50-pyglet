@@ -72,7 +72,6 @@ def on_draw():
     fps_display.draw()
 
 
-
 def on_key_press(symbol, _):
     if symbol == key.SPACE:
         if isinstance(state_machine.current, PlayState):
@@ -81,6 +80,7 @@ def on_key_press(symbol, _):
         pyglet.image.get_buffer_manager().get_color_buffer().save(
             'screenshot.png'
         )
+
 
 @window.event
 def on_mouse_press(_, __, button, ___):
