@@ -18,12 +18,17 @@ MAIN = 'main'
 ARROWS = 'arrows'
 HEARTS = 'hearts'
 PARTICLE = 'particle'
+
 NUM_PADDLES = 4
 SMALL_PADDLE_WIDTH = 32
 MEDIUM_PADDLE_WIDTH = 64
 LARGE_PADDLE_WIDTH = 96
 XL_PADDLE_WIDTH = 128
 PADDLE_HEIGHT = 16
+
+BALL_WIDTH = 8
+BALL_HEIGHT = 8
+NUM_BALLS = 7
 
 # Sounds
 PADDLE_HIT = 'paddle-hit'
@@ -50,3 +55,7 @@ PLAY = 'play'
 
 # Game
 PADDLE_SPEED = 200
+
+# Frames
+PADDLES = 'paddles'
+BALLS = 'balls'

@@ -40,4 +40,7 @@ sounds = {
 }
 
 # Frames (texture regions)
-frames = utils.generate_paddle_tex(textures[MAIN])
+frames = {
+    PADDLES: utils.generate_paddle_tex(textures[MAIN]),
+    BALLS: utils.generate_ball_tex(textures[MAIN])
+}

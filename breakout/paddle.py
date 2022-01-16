@@ -20,7 +20,8 @@ class Paddle(Sprite):
         self.dx = 0
         self.size = 2
         self.skin = 1
-        self.image = resources.frames[self.size + NUM_PADDLES * (self.skin - 1)]
+        paddle_number = self.size + NUM_PADDLES * (self.skin - 1)
+        self.image = resources.frames[PADDLES][paddle_number]
 
     def update(self, dt):
         if keys[key.LEFT]:

@@ -24,7 +24,7 @@ def generate_tex_regions(atlas, width, height):
 
 def generate_paddle_tex(atlas):
     x = 0
-    y = HEIGHT - 67
+    y = 176
     counter = 1
     texs = {}
 
@@ -48,4 +48,25 @@ def generate_paddle_tex(atlas):
         counter += 1
         # Prepare y for the next set of paddles
         y -= 2 * PADDLE_HEIGHT
+    return texs
+
+
+def generate_ball_tex(atlas):
+    x = 96
+    y = 56
+    counter = 1
+    texs = {}
+
+    for i in range(4):
+        texs[counter] = atlas.get_region(x, y, BALL_WIDTH, BALL_HEIGHT)
+        x += 8
+        counter = counter + 1
+
+    x = 96
+    y = 64
+
+    for i in range(3):
+        texs[counter] = atlas.get_region(x, y, BALL_WIDTH, BALL_HEIGHT)
+        x += 8
+        counter = counter + 1
     return texs
