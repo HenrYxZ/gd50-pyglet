@@ -1,3 +1,4 @@
+# Screen
 WIDTH = 432
 HEIGHT = 243
 COLOR_FPS = (0, 255, 0, 75)
@@ -17,6 +18,12 @@ MAIN = 'main'
 ARROWS = 'arrows'
 HEARTS = 'hearts'
 PARTICLE = 'particle'
+NUM_PADDLES = 4
+SMALL_PADDLE_WIDTH = 32
+MEDIUM_PADDLE_WIDTH = 64
+LARGE_PADDLE_WIDTH = 96
+XL_PADDLE_WIDTH = 128
+PADDLE_HEIGHT = 16
 
 # Sounds
 PADDLE_HIT = 'paddle-hit'
@@ -39,3 +46,7 @@ MUSIC_VOLUME = 0.2
 
 # States
 START = 'start'
+PLAY = 'play'
+
+# Game
+PADDLE_SPEED = 200

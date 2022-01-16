@@ -1,13 +1,16 @@
 import pyglet
+from pyglet.window import key
 
 # Local Modules
 from constants import *
+from paddle import keys as paddle_keys
 from resources import textures
 from state_machine import StateMachine
-from states import StartState
+from states import PlayState, StartState
 
 
 window = pyglet.window.Window(WIDTH, HEIGHT)
+window.push_handlers(paddle_keys)
 main_batch = pyglet.graphics.Batch()
 fps_label = pyglet.text.Label(color=COLOR_FPS, font_size=MEDIUM)
 fps_display = pyglet.window.FPSDisplay(window)
@@ -18,7 +21,8 @@ background.scale_x = WIDTH / background.width
 background.scale_y = HEIGHT / background.height
 
 state_machine = StateMachine({
-    START: lambda: StartState()
+    START: lambda: StartState(state_machine),
+    PLAY: lambda: PlayState(state_machine)
 })
 state_machine.change(START)
 
@@ -35,11 +39,15 @@ def on_draw():
     fps_display.draw()
 
 
-@window.event
 def on_key_press(symbol, _):
+    if symbol == key.S:
+        pyglet.image.get_buffer_manager().get_color_buffer().save(
+            'screenshot.png'
+        )
     state_machine.on_key_press(symbol)
 
 
 if __name__ == '__main__':
+    window.push_handlers(on_key_press=on_key_press)
     pyglet.clock.schedule_interval(update, REFRESH_RATE)
     pyglet.app.run()

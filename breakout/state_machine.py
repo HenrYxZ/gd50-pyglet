@@ -15,7 +15,7 @@ class StateMachine:
         if states is None:
             states = {}
         self.states = states
-        self.current = BaseState()
+        self.current = BaseState(self)
 
     def change(self, state_name, **kwargs):
         assert(state_name in self.states)

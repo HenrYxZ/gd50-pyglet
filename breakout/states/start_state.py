@@ -9,8 +9,8 @@ import utils
 
 
 class StartState(BaseState):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args):
+        super().__init__(*args)
         self.highlighted = 1
         self.batch = pyglet.graphics.Batch()
         self.title_label = pyglet.text.Label(
@@ -34,6 +34,10 @@ class StartState(BaseState):
         if symbol == key.UP or symbol == key.DOWN:
             self.highlighted = 2 if self.highlighted == 1 else 1
             utils.play(sounds[PADDLE_HIT])
+        if symbol == key.ENTER or symbol == key.RETURN:
+            if self.highlighted == 1:
+                self.state_machine.change(PLAY)
+                utils.play(sounds[CONFIRM])
 
     def render(self):
         if self.highlighted == 1:

@@ -1,6 +1,6 @@
 class BaseState:
-    def __init__(self):
-        pass
+    def __init__(self, state_machine):
+        self.state_machine = state_machine
 
     def enter(self):
         pass

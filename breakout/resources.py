@@ -2,12 +2,13 @@ import pyglet
 
 # Local modules
 from constants import *
+import utils
 
 
 pyglet.resource.path = ['fonts', 'graphics', 'sounds']
 pyglet.resource.reindex()
 
-# Sprites
+# Textures
 textures = {
     BACKGROUND: pyglet.resource.image("background.png"),
     MAIN: pyglet.resource.image("breakout.png"),
@@ -37,3 +38,6 @@ sounds = {
     PAUSE: pyglet.resource.media("pause.wav", streaming=False),
     MUSIC: pyglet.resource.media("music.wav")
 }
+
+# Frames (texture regions)
+frames = utils.generate_paddle_tex(textures[MAIN])
