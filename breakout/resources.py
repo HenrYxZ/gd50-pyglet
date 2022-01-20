@@ -14,7 +14,8 @@ textures = {
     MAIN: pyglet.resource.image("breakout.png"),
     ARROWS: pyglet.resource.image("arrows.png"),
     HEARTS: pyglet.resource.image("hearts.png"),
-    PARTICLE: pyglet.resource.image("particle.png")
+    PARTICLE: pyglet.resource.image("particle.png"),
+    MAIN_FLIP_Y: pyglet.resource.image("breakout_flip_y.png")
 }
 
 # Fonts
@@ -42,5 +43,6 @@ sounds = {
 # Frames (texture regions)
 frames = {
     PADDLES: utils.generate_paddle_tex(textures[MAIN]),
-    BALLS: utils.generate_ball_tex(textures[MAIN])
+    BALLS: utils.generate_ball_tex(textures[MAIN]),
+    BRICKS: utils.generate_brick_tex(textures[MAIN_FLIP_Y])
 }

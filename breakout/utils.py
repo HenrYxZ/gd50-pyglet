@@ -1,3 +1,5 @@
+import pyglet.image
+
 from constants import *
 
 
@@ -70,3 +72,13 @@ def generate_ball_tex(atlas):
         x += 8
         counter = counter + 1
     return texs
+
+
+def generate_brick_tex(atlas):
+    x = 0
+    bricks_cols = atlas.width // BRICKS_WIDTH
+    height = BRICKS_ROWS * BRICKS_HEIGHT
+    y = 0
+    bricks_region = atlas.get_region(x, y, atlas.width, height)
+    bricks_seq = pyglet.image.ImageGrid(bricks_region, BRICKS_ROWS, bricks_cols)
+    return bricks_seq

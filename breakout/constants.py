@@ -18,6 +18,7 @@ MAIN = 'main'
 ARROWS = 'arrows'
 HEARTS = 'hearts'
 PARTICLE = 'particle'
+MAIN_FLIP_Y = 'main_flip_y'
 
 NUM_PADDLES = 4
 SMALL_PADDLE_WIDTH = 32
@@ -29,6 +30,10 @@ PADDLE_HEIGHT = 16
 BALL_WIDTH = 8
 BALL_HEIGHT = 8
 NUM_BALLS = 7
+
+BRICKS_WIDTH = 32
+BRICKS_HEIGHT = 16
+BRICKS_ROWS = 4
 
 # Sounds
 PADDLE_HIT = 'paddle-hit'
@@ -46,7 +51,7 @@ HIGH_SCORE = 'high-score'
 PAUSE = 'pause'
 
 MUSIC = 'music'
-GLOBAL_VOLUME = 0.22
+GLOBAL_VOLUME = 0.3
 MUSIC_VOLUME = 0.2
 
 # States
@@ -55,7 +60,10 @@ PLAY = 'play'
 
 # Game
 PADDLE_SPEED = 200
+BRICKS_PADDING = 8
+LEFT_SIDE_PADDING = 16
 
 # Frames
 PADDLES = 'paddles'
 BALLS = 'balls'
+BRICKS = 'bricks'
