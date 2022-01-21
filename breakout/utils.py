@@ -10,21 +10,6 @@ def play(sound, volume=GLOBAL_VOLUME):
     return player
 
 
-def generate_tex_regions(atlas, width, height):
-    sheet_cols = atlas.width // width
-    sheet_rows = atlas.height // height
-    sheet_counter = 1
-    sprite_sheet = {}
-
-    for j in range(sheet_rows):
-        for i in range(sheet_cols):
-            x = i * width
-            y = j * height
-            sprite_sheet[sheet_counter] = atlas.get_region(x, y, width, height)
-            sheet_counter += 1
-    return sprite_sheet
-
-
 def generate_paddle_tex(atlas):
     x = 0
     y = 176
