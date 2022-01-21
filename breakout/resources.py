@@ -14,8 +14,7 @@ textures = {
     MAIN: pyglet.resource.image("breakout.png"),
     ARROWS: pyglet.resource.image("arrows.png"),
     HEARTS: pyglet.resource.image("hearts.png"),
-    PARTICLE: pyglet.resource.image("particle.png"),
-    MAIN_FLIP_Y: pyglet.resource.image("breakout_flip_y.png")
+    PARTICLE: pyglet.resource.image("particle.png")
 }
 
 # Fonts
