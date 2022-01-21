@@ -1,6 +1,7 @@
 import pyglet.image
 
 from constants import *
+from flip_image_grid import FlippedImageGrid
 
 
 def play(sound, volume=GLOBAL_VOLUME):
@@ -78,7 +79,7 @@ def generate_brick_tex(atlas):
     x = 0
     bricks_cols = atlas.width // BRICKS_WIDTH
     height = BRICKS_ROWS * BRICKS_HEIGHT
-    y = 0
+    y = atlas.height - height
     bricks_region = atlas.get_region(x, y, atlas.width, height)
-    bricks_seq = pyglet.image.ImageGrid(bricks_region, BRICKS_ROWS, bricks_cols)
-    return bricks_seq
+    bricks_seq = FlippedImageGrid(bricks_region, BRICKS_ROWS, bricks_cols)
+    return bricks_seq[:22]

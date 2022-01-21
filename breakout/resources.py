@@ -44,5 +44,5 @@ sounds = {
 frames = {
     PADDLES: utils.generate_paddle_tex(textures[MAIN]),
     BALLS: utils.generate_ball_tex(textures[MAIN]),
-    BRICKS: utils.generate_brick_tex(textures[MAIN_FLIP_Y])
+    BRICKS: utils.generate_brick_tex(textures[MAIN])
 }
