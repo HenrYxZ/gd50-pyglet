@@ -10,6 +10,7 @@ from paddle import Paddle
 from states import BaseState
 from resources import sounds
 import resources
+from ui import render_health, render_score
 import utils
 
 
@@ -17,20 +18,31 @@ class PlayState(BaseState):
     def __init__(self, *args):
         super().__init__(*args)
         self.pause = False
-        self.paddle = Paddle()
-        self.ball = Ball(random.randint(1, NUM_BALLS), x=WIDTH/2-4, y=42)
+        self.paddle = None
+        self.ball = None
+        self.bricks = None
         self.pause_label = pyglet.text.Label(
             "PAUSE", x=WIDTH/2, y=HEIGHT-(HEIGHT/2-16), font_name=FONT_NAME,
             font_size=LARGE, anchor_x='center', anchor_y='center'
         )
-        self.bricks = LevelMaker.create_map()
-        self.ball.dx = random.randint(-200, 200)
-        self.ball.dy = random.randint(50, 60)
+        self.health = MAX_HEALTH
+        self.score = 0
 
     def on_key_press(self, symbol):
         if symbol == key.SPACE:
             self.pause = not self.pause
             utils.play(sounds[PAUSE])
+
+    def enter(
+        self, paddle=None, bricks=None, health=MAX_HEALTH, score=0, ball=None
+    ):
+        self.paddle = paddle
+        self.bricks = bricks
+        self.health = health
+        self.score = score
+        self.ball = ball
+        self.ball.dx = random.randrange(-200, 200)
+        self.ball.dy = random.randrange(50, 60)
 
     def update(self, dt):
         if self.pause:
@@ -63,6 +75,7 @@ class PlayState(BaseState):
         for brick in filter(lambda l: l.in_play, self.bricks):
             if self.ball.collides(brick):
                 brick.hit()
+                self.score += SCORE_PER_BLOCK
                 # bounce ball
                 ball_right = self.ball.x + self.ball.width
                 ball_top = self.ball.y + self.ball.height
@@ -88,6 +101,21 @@ class PlayState(BaseState):
                 self.ball.dy *= BALL_DY_FACTOR
                 # Only allow collision with one brick
                 break
+        # Handle losing a point
+        if self.ball.y < 0:
+            self.health -= 1
+            utils.play(sounds[HURT])
+
+            if self.health == 0:
+                self.state_machine.change(GAME_OVER, score=self.score)
+            else:
+                self.state_machine.change(
+                    SERVE,
+                    paddle=self.paddle,
+                    bricks=self.bricks,
+                    health=self.health,
+                    score=self.score
+                )
 
     def render(self):
         for brick in filter(lambda l: l.in_play, self.bricks):
@@ -95,6 +123,9 @@ class PlayState(BaseState):
 
         self.paddle.draw()
         self.ball.draw()
+
+        render_health(self.health)
+        render_score(self.score)
 
         if self.pause:
             self.pause_label.draw()

@@ -3,6 +3,8 @@ from pyglet.window import key
 
 
 from constants import *
+from paddle import Paddle
+from level_maker import LevelMaker
 from states import BaseState
 from resources import sounds
 import utils
@@ -36,7 +38,13 @@ class StartState(BaseState):
             utils.play(sounds[PADDLE_HIT])
         if symbol == key.ENTER or symbol == key.RETURN:
             if self.highlighted == 1:
-                self.state_machine.change(PLAY)
+                self.state_machine.change(
+                    SERVE,
+                    paddle=Paddle(1),
+                    bricks=LevelMaker.create_map(),
+                    health=MAX_HEALTH,
+                    score=0
+                )
                 utils.play(sounds[CONFIRM])
 
     def render(self):

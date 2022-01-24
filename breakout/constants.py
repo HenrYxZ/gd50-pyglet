@@ -56,7 +56,10 @@ MUSIC_VOLUME = 0.2
 
 # States
 START = 'start'
+SERVE = 'serve'
 PLAY = 'play'
+GAME_OVER = 'game_over'
+
 
 # Game
 PADDLE_SPEED = 200
@@ -65,8 +68,12 @@ LEFT_SIDE_PADDING = 16
 BALL_BOUNCE_SPEED = 50
 BALL_BOUNCE_FACTOR = 8
 BALL_DY_FACTOR = 1.02
+MAX_HEALTH = 3
+SCORE_PER_BLOCK = 10
 
 # Frames
 PADDLES = 'paddles'
 BALLS = 'balls'
 BRICKS = 'bricks'
+HEART_FULL = 0
+HEART_EMPTY = 1

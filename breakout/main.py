@@ -4,9 +4,9 @@ from pyglet.window import key
 # Local Modules
 from constants import *
 from paddle import keys as paddle_keys
-from resources import textures
+from resources import textures, frames
 from state_machine import StateMachine
-from states import PlayState, StartState
+from states import GameOverState, PlayState, ServeState, StartState
 
 
 window = pyglet.window.Window(WIDTH, HEIGHT)
@@ -22,7 +22,9 @@ background.scale_y = HEIGHT / background.height
 
 state_machine = StateMachine({
     START: lambda: StartState(state_machine),
-    PLAY: lambda: PlayState(state_machine)
+    SERVE: lambda: ServeState(state_machine),
+    PLAY: lambda: PlayState(state_machine),
+    GAME_OVER: lambda: GameOverState(state_machine)
 })
 state_machine.change(START)
 

@@ -13,13 +13,13 @@ temp_img = pyglet.image.Texture.create(10, 10)
 
 
 class Paddle(Sprite):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, skin, *args, **kwargs):
         super(Paddle, self).__init__(img=temp_img, *args, **kwargs)
         self.x = WIDTH / 2 - 32
         self.y = 32
         self.dx = 0
         self.size = 2
-        self.skin = 1
+        self.skin = skin
         paddle_number = self.size + NUM_PADDLES * (self.skin - 1)
         self.image = resources.frames[PADDLES][paddle_number]
 
