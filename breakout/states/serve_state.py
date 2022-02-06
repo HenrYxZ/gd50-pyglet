@@ -28,7 +28,7 @@ class ServeState(BaseState):
         self.health = health
         self.score = score
 
-        ball_skin = random.randint(1, NUM_BALLS + 1)
+        ball_skin = random.randint(1, NUM_BALLS)
         self.ball = Ball(ball_skin)
 
     def update(self, dt):
@@ -42,7 +42,7 @@ class ServeState(BaseState):
         self.paddle.draw()
         self.ball.draw()
 
-        for brick in self.bricks:
+        for brick in filter(lambda l: l.in_play, self.bricks):
             brick.draw()
 
         render_health(self.health)
