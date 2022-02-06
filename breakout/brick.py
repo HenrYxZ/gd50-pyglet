@@ -17,9 +17,11 @@ class Brick(Sprite):
         self.tier = 0
         self.skin = 1
         self.in_play = True
-        image_idx = (self.skin - 1) * 4 + self.tier     # idx starting from 0
-        self.image = resources.frames[BRICKS][image_idx]
 
     def hit(self):
         utils.play(sounds[BRICK_HIT_2])
         self.in_play = False
+
+    def set_image_from_skin(self):
+        image_idx = (self.skin - 1) * 4 + self.tier  # idx starting from 0
+        self.image = resources.frames[BRICKS][image_idx]

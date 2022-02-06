@@ -41,7 +41,7 @@ class StartState(BaseState):
                 self.state_machine.change(
                     SERVE,
                     paddle=Paddle(1),
-                    bricks=LevelMaker.create_map(),
+                    bricks=LevelMaker.create_map(1),
                     health=MAX_HEALTH,
                     score=0
                 )
