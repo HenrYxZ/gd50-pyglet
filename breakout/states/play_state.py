@@ -52,7 +52,7 @@ class PlayState(BaseState):
         # Handle collision with paddle
         if self.ball.collides(self.paddle):
             self.ball.dy = -self.ball.dy
-            self.ball.y = self.paddle.y + self.paddle.height + 1
+            self.ball.y = self.paddle.y + self.paddle.height
             # Add angle influence
             paddle_center = self.paddle.x + self.paddle.width / 2
             ball_center = self.ball.x + self.ball.width / 2

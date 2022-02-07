@@ -20,7 +20,19 @@ class Brick(Sprite):
 
     def hit(self):
         utils.play(sounds[BRICK_HIT_2])
-        self.in_play = False
+        # manage tiers and colors
+        if self.tier > 0:
+            if self.skin == 1:
+                self.tier -= 1
+                self.skin = 5
+            else:
+                self.skin -= 1
+        else:
+            if self.skin == 1:
+                self.in_play = False
+                utils.play(sounds[BRICK_HIT_1])
+            self.skin -= 1
+        self.set_image_from_skin()
 
     def set_image_from_skin(self):
         image_idx = (self.skin - 1) * 4 + self.tier  # idx starting from 0
