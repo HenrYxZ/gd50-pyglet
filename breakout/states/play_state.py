@@ -75,13 +75,13 @@ class PlayState(BaseState):
         for brick in filter(lambda l: l.in_play, self.bricks):
             if self.ball.collides(brick):
                 brick.hit()
-                self.score += SCORE_PER_BLOCK
+                self.score += brick.tier * TIER_MULT + brick.skin * SKIN_MULT
                 # bounce ball
                 ball_right = self.ball.x + self.ball.width
                 ball_top = self.ball.y + self.ball.height
                 brick_top = brick.y + brick.height
                 brick_right = brick.x + brick.width
-                if ball_right - 2 < brick.x and self.ball.dx > 0:
+                if self.ball.x + 2 < brick.x and self.ball.dx > 0:
                     # left collision
                     self.ball.dx = -self.ball.dx
                     self.ball.x = brick.x - self.ball.width
@@ -89,7 +89,7 @@ class PlayState(BaseState):
                     # right collision
                     self.ball.dx = -self.ball.dx
                     self.ball.x = brick_right
-                elif ball_top < brick_top:
+                elif self.ball.y - 2 > brick_top:
                     # top collision
                     self.ball.dy = -self.ball.dy
                     self.ball.y = brick_top
