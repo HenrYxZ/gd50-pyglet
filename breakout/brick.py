@@ -31,7 +31,9 @@ class Brick(Sprite):
             if self.skin == 1:
                 self.in_play = False
                 utils.play(sounds[BRICK_HIT_1])
-            self.skin -= 1
+            else:
+                self.skin -= 1
+
         self.set_image_from_skin()
 
     def set_image_from_skin(self):
