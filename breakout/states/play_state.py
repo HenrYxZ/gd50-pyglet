@@ -1,5 +1,6 @@
 import pyglet
 from pyglet.window import key
+import numpy as np
 import random
 
 
@@ -7,11 +8,32 @@ from ball import Ball
 from constants import *
 from level_maker import LevelMaker
 from paddle import Paddle
+from particles import ParticleSettings, ParticleSystem
 from states import BaseState
 from resources import sounds
 import resources
 from ui import render_health, render_score
 import utils
+
+
+def settings_by_skin_and_tier(skin, tier):
+    # Use same color for start and end
+    color = PALETTE_COLORS[skin]
+    start_opacity = (tier + 1) * ALPHA_STEP
+    end_opacity = 0
+    return ParticleSettings(
+        color, color, start_opacity, end_opacity, PARTICLES_MIN_LIFESPAN,
+        PARTICLES_MAX_LIFESPAN
+    )
+
+
+PARTICLE_SETTINGS = {}
+
+for brick_skin in range(1, NUM_BRICKS + 1):
+    for brick_tier in range(NUM_BRICK_TIERS):
+        PARTICLE_SETTINGS[(brick_skin, brick_tier)] = settings_by_skin_and_tier(
+            brick_skin, brick_tier
+        )
 
 
 class PlayState(BaseState):
@@ -27,6 +49,10 @@ class PlayState(BaseState):
         )
         self.health = MAX_HEALTH
         self.score = 0
+        self.particle_system = ParticleSystem(
+            resources.textures[PARTICLE], MAX_PARTICLES
+        )
+        self.particle_system.forces.append(GRAVITY / PIXEL_SIZE)
 
     def on_key_press(self, symbol):
         if symbol == key.SPACE:
@@ -74,11 +100,18 @@ class PlayState(BaseState):
         # Handle collision with bricks that are in play
         for brick in filter(lambda l: l.in_play, self.bricks):
             if self.ball.collides(brick):
+                # Emit particles
+                source_x = brick.x + brick.width / 2
+                source_y = brick.y + brick.height / 2
+                particle_settings = PARTICLE_SETTINGS[(brick.skin, brick.tier)]
+                self.particle_system.emit(
+                    source_x, source_y, PARTICLES_PER_HIT, particle_settings
+                )
+                # hit brick
                 brick.hit()
                 self.score += brick.tier * TIER_MULT + brick.skin * SKIN_MULT
                 # bounce ball
                 ball_right = self.ball.x + self.ball.width
-                ball_top = self.ball.y + self.ball.height
                 brick_top = brick.y + brick.height
                 brick_right = brick.x + brick.width
                 if self.ball.x + 2 < brick.x and self.ball.dx > 0:
@@ -116,6 +149,8 @@ class PlayState(BaseState):
                     health=self.health,
                     score=self.score
                 )
+        # update particles
+        self.particle_system.update(dt)
 
     def render(self):
         for brick in filter(lambda l: l.in_play, self.bricks):
@@ -129,3 +164,4 @@ class PlayState(BaseState):
 
         if self.pause:
             self.pause_label.draw()
+        self.particle_system.draw()
