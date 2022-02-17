@@ -5,35 +5,36 @@ import random
 
 from ball import Ball
 from constants import *
+from level_maker import LevelMaker
 from states import BaseState
 from ui import render_health, render_score
 
 
-class ServeState(BaseState):
+class VictoryState(BaseState):
     def __init__(self, *args, **kwargs):
-        super(ServeState, self).__init__(*args, **kwargs)
+        super(VictoryState, self).__init__(*args, **kwargs)
         self.level = 0
-        self.paddle = None
-        self.ball = None
-        self.bricks = None
-        self.health = MAX_HEALTH
         self.score = 0
-        self.label = Label(
+        self.paddle = None
+        self.health = MAX_HEALTH
+        self.ball = None
+        self.label = Label(x=WIDTH/2, y=3*HEIGHT/4, font_name=FONT_NAME,
+            font_size=MEDIUM, anchor_x='center', anchor_y='center'
+        )
+        self.instructions = Label(
             "Press Enter to serve!", x=WIDTH/2, y=HEIGHT/2, font_name=FONT_NAME,
             font_size=MEDIUM, anchor_x='center', anchor_y='center'
         )
 
     def enter(
-        self, level=0, paddle=None, bricks=None, health=MAX_HEALTH, score=0
+            self, level=0, score=0, paddle=None, health=MAX_HEALTH, ball=None
     ):
         self.level = level
-        self.paddle = paddle
-        self.bricks = bricks
-        self.health = health
         self.score = score
-
-        ball_skin = random.randint(1, NUM_BALLS)
-        self.ball = Ball(ball_skin)
+        self.paddle = paddle
+        self.health = health
+        self.ball = ball
+        self.label.text = f"Level {level} complete!"
 
     def update(self, dt):
         self.paddle.update(dt)
@@ -46,20 +47,19 @@ class ServeState(BaseState):
         self.paddle.draw()
         self.ball.draw()
 
-        for brick in filter(lambda l: l.in_play, self.bricks):
-            brick.draw()
-
         render_health(self.health)
         render_score(self.score)
+
+        self.label.draw()
+        self.instructions.draw()
 
     def on_key_press(self, symbol):
         if symbol == key.ENTER or symbol == key.RETURN:
             self.state_machine.change(
-                PLAY,
-                level=self.level,
+                SERVE,
+                level=self.level+1,
                 paddle=self.paddle,
-                bricks=self.bricks,
+                bricks=LevelMaker.create_map(self.level+1),
                 health=self.health,
-                score=self.score,
-                ball=self.ball
+                score=self.score
             )

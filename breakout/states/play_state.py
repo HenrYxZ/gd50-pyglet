@@ -49,6 +49,7 @@ class PlayState(BaseState):
         )
         self.health = MAX_HEALTH
         self.score = 0
+        self.level = 0
         self.particle_system = ParticleSystem(
             resources.textures[PARTICLE], MAX_PARTICLES
         )
@@ -60,8 +61,10 @@ class PlayState(BaseState):
             utils.play(sounds[PAUSE])
 
     def enter(
-        self, paddle=None, bricks=None, health=MAX_HEALTH, score=0, ball=None
+        self, level=0, paddle=None, bricks=None, health=MAX_HEALTH, score=0,
+        ball=None
     ):
+        self.level = level
         self.paddle = paddle
         self.bricks = bricks
         self.health = health
@@ -110,6 +113,17 @@ class PlayState(BaseState):
                 # hit brick
                 brick.hit()
                 self.score += brick.tier * TIER_MULT + brick.skin * SKIN_MULT
+
+                if self.check_victory():
+                    utils.play(sounds[VICTORY])
+                    self.state_machine.change(
+                        VICTORY,
+                        level=self.level,
+                        score=self.score,
+                        paddle=self.paddle,
+                        health=self.health,
+                        ball=self.ball
+                    )
                 # bounce ball
                 ball_right = self.ball.x + self.ball.width
                 brick_top = brick.y + brick.height
@@ -165,3 +179,9 @@ class PlayState(BaseState):
         if self.pause:
             self.pause_label.draw()
         self.particle_system.draw()
+
+    def check_victory(self):
+        for brick in self.bricks:
+            if brick.in_play:
+                return False
+        return True

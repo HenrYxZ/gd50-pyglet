@@ -6,7 +6,8 @@ from constants import *
 from paddle import keys as paddle_keys
 from resources import textures, frames
 from state_machine import StateMachine
-from states import GameOverState, PlayState, ServeState, StartState
+from states import GameOverState, PlayState, ServeState, StartState, \
+    VictoryState
 
 
 window = pyglet.window.Window(WIDTH, HEIGHT)
@@ -24,7 +25,8 @@ state_machine = StateMachine({
     START: lambda: StartState(state_machine),
     SERVE: lambda: ServeState(state_machine),
     PLAY: lambda: PlayState(state_machine),
-    GAME_OVER: lambda: GameOverState(state_machine)
+    GAME_OVER: lambda: GameOverState(state_machine),
+    VICTORY: lambda : VictoryState(state_machine)
 })
 state_machine.change(START)
 

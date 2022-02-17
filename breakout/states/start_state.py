@@ -40,6 +40,7 @@ class StartState(BaseState):
             if self.highlighted == 1:
                 self.state_machine.change(
                     SERVE,
+                    level=1,
                     paddle=Paddle(1),
                     bricks=LevelMaker.create_map(1),
                     health=MAX_HEALTH,
