@@ -14,6 +14,7 @@ class StartState(BaseState):
     def __init__(self, *args):
         super().__init__(*args)
         self.highlighted = 1
+        self.high_scores = {}
         self.batch = pyglet.graphics.Batch()
         self.title_label = pyglet.text.Label(
             "BREAKOUT", x=WIDTH/2, y=HEIGHT-HEIGHT/3, font_name=FONT_NAME,
@@ -32,6 +33,9 @@ class StartState(BaseState):
             anchor_y='center'
         )
 
+    def enter(self, high_scores):
+        self.high_scores = high_scores
+
     def on_key_press(self, symbol):
         if symbol == key.UP or symbol == key.DOWN:
             self.highlighted = 2 if self.highlighted == 1 else 1
@@ -47,6 +51,11 @@ class StartState(BaseState):
                     score=0
                 )
                 utils.play(sounds[CONFIRM])
+            else:
+                self.state_machine.change(
+                    HIGH_SCORE,
+                    high_scores=self.high_scores
+                )
 
     def render(self):
         if self.highlighted == 1:

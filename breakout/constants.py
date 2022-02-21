@@ -106,3 +106,6 @@ HEART_EMPTY = 1
 # Physics
 GRAVITY = np.array([0, -10])
 PIXEL_SIZE = 20 / WIDTH
+
+# UI
+HIGH_SCORE_COUNT = 10
