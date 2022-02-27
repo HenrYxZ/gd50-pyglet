@@ -4,7 +4,7 @@ from pyglet.window import key
 
 
 from constants import *
-from states import BaseState
+from breakout.states import BaseState
 from resources import sounds
 import utils
 

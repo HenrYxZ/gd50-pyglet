@@ -9,7 +9,7 @@ from constants import *
 from level_maker import LevelMaker
 from paddle import Paddle
 from particles import ParticleSettings, ParticleSystem
-from states import BaseState
+from breakout.states import BaseState
 from resources import sounds
 import resources
 from ui import render_health, render_score

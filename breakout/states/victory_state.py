@@ -6,7 +6,7 @@ import random
 from ball import Ball
 from constants import *
 from level_maker import LevelMaker
-from states import BaseState
+from breakout.states import BaseState
 from ui import render_health, render_score
 
 

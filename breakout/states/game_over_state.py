@@ -3,7 +3,7 @@ from pyglet.window import key
 
 
 from constants import *
-from states import BaseState
+from breakout.states import BaseState
 
 
 FINAL_SCORE_STR = "Final Score: {0}"

@@ -5,7 +5,7 @@ import random
 
 from ball import Ball
 from constants import *
-from states import BaseState
+from breakout.states import BaseState
 from ui import render_health, render_score
 
 

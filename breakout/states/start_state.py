@@ -5,7 +5,7 @@ from pyglet.window import key
 from constants import *
 from paddle import Paddle
 from level_maker import LevelMaker
-from states import BaseState
+from breakout.states import BaseState
 from resources import sounds
 import utils
 
