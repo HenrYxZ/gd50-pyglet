@@ -48,7 +48,8 @@ class StartState(BaseState):
                     paddle=Paddle(1),
                     bricks=LevelMaker.create_map(1),
                     health=MAX_HEALTH,
-                    score=0
+                    score=0,
+                    high_scores=self.high_scores
                 )
                 utils.play(sounds[CONFIRM])
             else:

@@ -45,7 +45,7 @@ class HighScoreState(BaseState):
                 batch=self.batch
             )
             Label(
-                row["score"], x=x2, y=y, font_name=FONT_NAME,
+                str(row["score"]), x=x2, y=y, font_name=FONT_NAME,
                 font_size=MEDIUM, anchor_x='right',
                 batch=self.batch
             )

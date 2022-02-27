@@ -1,3 +1,4 @@
+import os
 import pyglet.image
 
 from constants import *
@@ -68,3 +69,46 @@ def generate_brick_tex(atlas):
     bricks_region = atlas.get_region(x, y, atlas.width, height)
     bricks_seq = FlippedImageGrid(bricks_region, BRICKS_ROWS, bricks_cols)
     return bricks_seq[:22]
+
+
+def read_high_scores(filename):
+    scores: dict[int, dict[str, Any]] = {}
+    counter = 1
+    with open(filename, 'rt') as f:
+        reading_name = True
+        for line in f:
+            if reading_name:
+                scores[counter] = {"name": line[0:3]}
+            else:
+                scores[counter]['score'] = int(line)
+                counter += 1
+            reading_name = not reading_name
+    return scores
+
+
+def write_high_scores(high_scores):
+    folder = pyglet.resource.get_settings_path('Breakout')
+    filename = os.path.join(folder, 'highscores.txt')
+    scores_str = ""
+    for i in range(1, 11):
+        scores_str += f"{high_scores[i]['name']}\n"
+        scores_str += f"{high_scores[i]['score']}\n"
+    with open(filename, 'wt') as f:
+        f.write(scores_str)
+
+
+def load_high_scores():
+    folder = pyglet.resource.get_settings_path('Breakout')
+    filename = os.path.join(folder, 'highscores.txt')
+    if not os.path.exists(folder):
+        # Make folder if it doesn't exist
+        os.makedirs(folder)
+        # Write a placeholder highscore
+        scores_str = ""
+        for i in range(10, 0, -1):
+            scores_str += "CTO\n"
+            scores_str += f"{i * 1000}\n"
+        with open(filename, 'wt') as f:
+            f.write(scores_str)
+    scores = read_high_scores(filename)
+    return scores

@@ -55,4 +55,6 @@ class LevelMaker:
                     b.tier = tier_1
                 b.set_image_from_skin()
                 bricks.append(b)
+        if not bricks:
+            bricks = LevelMaker.create_map(level)
         return bricks

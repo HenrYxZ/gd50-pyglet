@@ -18,6 +18,7 @@ class VictoryState(BaseState):
         self.paddle = None
         self.health = MAX_HEALTH
         self.ball = None
+        self.high_scores = {}
         self.label = Label(x=WIDTH/2, y=3*HEIGHT/4, font_name=FONT_NAME,
             font_size=MEDIUM, anchor_x='center', anchor_y='center'
         )
@@ -27,7 +28,8 @@ class VictoryState(BaseState):
         )
 
     def enter(
-            self, level=0, score=0, paddle=None, health=MAX_HEALTH, ball=None
+        self, level=0, score=0, paddle=None, health=MAX_HEALTH, ball=None,
+        high_scores=None
     ):
         self.level = level
         self.score = score
@@ -35,6 +37,7 @@ class VictoryState(BaseState):
         self.health = health
         self.ball = ball
         self.label.text = f"Level {level} complete!"
+        self.high_scores = high_scores
 
     def update(self, dt):
         self.paddle.update(dt)
@@ -61,5 +64,6 @@ class VictoryState(BaseState):
                 paddle=self.paddle,
                 bricks=LevelMaker.create_map(self.level+1),
                 health=self.health,
-                score=self.score
+                score=self.score,
+                high_scores=self.high_scores
             )

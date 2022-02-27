@@ -54,6 +54,7 @@ class PlayState(BaseState):
             resources.textures[PARTICLE], MAX_PARTICLES
         )
         self.particle_system.forces.append(GRAVITY / PIXEL_SIZE)
+        self.high_scores = {}
 
     def on_key_press(self, symbol):
         if symbol == key.SPACE:
@@ -62,7 +63,7 @@ class PlayState(BaseState):
 
     def enter(
         self, level=0, paddle=None, bricks=None, health=MAX_HEALTH, score=0,
-        ball=None
+        ball=None, high_scores=None
     ):
         self.level = level
         self.paddle = paddle
@@ -70,6 +71,7 @@ class PlayState(BaseState):
         self.health = health
         self.score = score
         self.ball = ball
+        self.high_scores = high_scores
         self.ball.dx = random.randrange(-200, 200)
         self.ball.dy = random.randrange(50, 60)
 
@@ -122,7 +124,8 @@ class PlayState(BaseState):
                         score=self.score,
                         paddle=self.paddle,
                         health=self.health,
-                        ball=self.ball
+                        ball=self.ball,
+                        high_scores=self.high_scores
                     )
                 # bounce ball
                 ball_right = self.ball.x + self.ball.width
@@ -154,14 +157,17 @@ class PlayState(BaseState):
             utils.play(sounds[HURT])
 
             if self.health == 0:
-                self.state_machine.change(GAME_OVER, score=self.score)
+                self.state_machine.change(
+                    GAME_OVER, score=self.score, high_scores=self.high_scores
+                )
             else:
                 self.state_machine.change(
                     SERVE,
                     paddle=self.paddle,
                     bricks=self.bricks,
                     health=self.health,
-                    score=self.score
+                    score=self.score,
+                    high_scores=self.high_scores
                 )
         # update particles
         self.particle_system.update(dt)

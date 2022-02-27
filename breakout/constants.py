@@ -82,6 +82,7 @@ START = 'start'
 SERVE = 'serve'
 PLAY = 'play'
 GAME_OVER = 'game_over'
+ENTER_HIGH_SCORE = 'enter_high_score'
 
 
 # Game
@@ -92,7 +93,6 @@ BALL_BOUNCE_SPEED = 50
 BALL_BOUNCE_FACTOR = 8
 BALL_DY_FACTOR = 1.02
 MAX_HEALTH = 3
-SCORE_PER_BLOCK = 10
 TIER_MULT = 200
 SKIN_MULT = 25
 

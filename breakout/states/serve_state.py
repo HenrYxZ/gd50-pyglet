@@ -18,19 +18,22 @@ class ServeState(BaseState):
         self.bricks = None
         self.health = MAX_HEALTH
         self.score = 0
+        self.high_scores = {}
         self.label = Label(
             "Press Enter to serve!", x=WIDTH/2, y=HEIGHT/2, font_name=FONT_NAME,
             font_size=MEDIUM, anchor_x='center', anchor_y='center'
         )
 
     def enter(
-        self, level=0, paddle=None, bricks=None, health=MAX_HEALTH, score=0
+        self, level=0, paddle=None, bricks=None, health=MAX_HEALTH, score=0,
+        high_scores=None
     ):
         self.level = level
         self.paddle = paddle
         self.bricks = bricks
         self.health = health
         self.score = score
+        self.high_scores = high_scores
 
         ball_skin = random.randint(1, NUM_BALLS)
         self.ball = Ball(ball_skin)
@@ -61,5 +64,6 @@ class ServeState(BaseState):
                 bricks=self.bricks,
                 health=self.health,
                 score=self.score,
-                ball=self.ball
+                ball=self.ball,
+                high_scores=self.high_scores
             )
