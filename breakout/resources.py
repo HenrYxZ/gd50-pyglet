@@ -44,5 +44,6 @@ frames = {
     PADDLES: utils.generate_paddle_tex(textures[MAIN]),
     BALLS: utils.generate_ball_tex(textures[MAIN]),
     BRICKS: utils.generate_brick_tex(textures[MAIN]),
-    HEARTS: pyglet.image.ImageGrid(textures[HEARTS], 1, 2)
+    HEARTS: pyglet.image.ImageGrid(textures[HEARTS], 1, 2),
+    ARROWS: pyglet.image.ImageGrid(textures[ARROWS], 1, 2)
 }

@@ -83,6 +83,7 @@ SERVE = 'serve'
 PLAY = 'play'
 GAME_OVER = 'game_over'
 ENTER_HIGH_SCORE = 'enter_high_score'
+PADDLE_SELECT = 'paddle_select'
 
 
 # Game

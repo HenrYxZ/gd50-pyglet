@@ -33,7 +33,7 @@ class StartState(BaseState):
             anchor_y='center'
         )
 
-    def enter(self, high_scores):
+    def enter(self, high_scores=None):
         self.high_scores = high_scores
 
     def on_key_press(self, symbol):
@@ -41,21 +41,14 @@ class StartState(BaseState):
             self.highlighted = 2 if self.highlighted == 1 else 1
             utils.play(sounds[PADDLE_HIT])
         if symbol == key.ENTER or symbol == key.RETURN:
+            utils.play(sounds[CONFIRM])
             if self.highlighted == 1:
                 self.state_machine.change(
-                    SERVE,
-                    level=1,
-                    paddle=Paddle(1),
-                    bricks=LevelMaker.create_map(1),
-                    health=MAX_HEALTH,
-                    score=0,
-                    high_scores=self.high_scores
+                    PADDLE_SELECT, high_scores=self.high_scores
                 )
-                utils.play(sounds[CONFIRM])
             else:
                 self.state_machine.change(
-                    HIGH_SCORE,
-                    high_scores=self.high_scores
+                    HIGH_SCORE, high_scores=self.high_scores
                 )
 
     def render(self):

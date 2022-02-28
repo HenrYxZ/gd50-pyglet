@@ -3,11 +3,11 @@ from pyglet.window import key
 
 # Local Modules
 from constants import *
-from paddle import keys as paddle_keys
+from breakout.paddle import keys as paddle_keys
 from resources import textures, frames
 from state_machine import StateMachine
 from states import GameOverState, PlayState, ServeState, StartState, \
-    VictoryState, HighScoreState, EnterHighScoreState
+    VictoryState, HighScoreState, EnterHighScoreState, PaddleSelectState
 import utils
 
 
@@ -29,7 +29,8 @@ state_machine = StateMachine({
     GAME_OVER: lambda: GameOverState(state_machine),
     VICTORY: lambda: VictoryState(state_machine),
     HIGH_SCORE: lambda: HighScoreState(state_machine),
-    ENTER_HIGH_SCORE: lambda: EnterHighScoreState(state_machine)
+    ENTER_HIGH_SCORE: lambda: EnterHighScoreState(state_machine),
+    PADDLE_SELECT: lambda: PaddleSelectState(state_machine)
 })
 
 
