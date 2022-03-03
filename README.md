@@ -16,7 +16,7 @@ Ex:
 
 `$ cd pong`
 
-`$pong/ python main.py `
+`pong/$ python main.py `
 
 ## Dependencies
 
@@ -33,3 +33,6 @@ For the projects to work you need to install the modules **pyglet** and
 
 ### Fifty-Bird
 ![fifty-bird](flappy-bird/screenshot.png)
+
+### Breakout
+![breakout](breakout/screenshot.png)
