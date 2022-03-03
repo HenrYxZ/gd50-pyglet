@@ -5,6 +5,7 @@ from pyglet.window import key
 from constants import *
 from breakout.paddle import keys as paddle_keys
 from resources import textures, frames
+from breakout import resources
 from state_machine import StateMachine
 from states import GameOverState, PlayState, ServeState, StartState, \
     VictoryState, HighScoreState, EnterHighScoreState, PaddleSelectState
@@ -57,5 +58,7 @@ def on_key_press(symbol, _):
 if __name__ == '__main__':
     window.push_handlers(on_key_press=on_key_press)
     state_machine.change(START, high_scores=utils.load_high_scores())
+    player = utils.play(resources.sounds[MUSIC], MUSIC_VOLUME)
+    player.loop = True
     pyglet.clock.schedule_interval(update, REFRESH_RATE)
     pyglet.app.run()

@@ -19,6 +19,10 @@ class ServeState(BaseState):
         self.health = MAX_HEALTH
         self.score = 0
         self.high_scores = {}
+        self.lvl_label = Label(
+            x=WIDTH/2, y=3*HEIGHT/4, font_name=FONT_NAME, font_size=LARGE,
+            anchor_x='center', anchor_y='center'
+        )
         self.label = Label(
             "Press Enter to serve!", x=WIDTH/2, y=HEIGHT/2, font_name=FONT_NAME,
             font_size=MEDIUM, anchor_x='center', anchor_y='center'
@@ -34,6 +38,7 @@ class ServeState(BaseState):
         self.health = health
         self.score = score
         self.high_scores = high_scores
+        self.lvl_label.text = f"Level {level}"
 
         ball_skin = random.randint(1, NUM_BALLS)
         self.ball = Ball(ball_skin)
@@ -54,6 +59,9 @@ class ServeState(BaseState):
 
         render_health(self.health)
         render_score(self.score)
+
+        self.lvl_label.draw()
+        self.label.draw()
 
     def on_key_press(self, symbol):
         if symbol == key.ENTER or symbol == key.RETURN:

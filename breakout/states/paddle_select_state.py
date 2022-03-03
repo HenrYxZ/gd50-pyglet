@@ -1,3 +1,4 @@
+import pyglet
 from pyglet.sprite import Sprite
 from pyglet.text import Label
 from pyglet.window import key
@@ -16,11 +17,22 @@ class PaddleSelectState(BaseState):
         super(PaddleSelectState, self).__init__(*args)
         self.currentPaddle = 1
         self.high_scores = {}
-        self.main_label = Label(
-            "Select your paddle with left and right!", x=WIDTH/2, y=3*HEIGHT/4,
-            font_name=FONT_NAME, font_size=MEDIUM, anchor_x='center',
-            anchor_y='center'
+        doc = pyglet.text.document.FormattedDocument(
+            "Select your paddle with left and right!"
         )
+        doc.set_style(
+            0, len(doc.text), dict(
+                color=(255, 255, 255, 255), font_name=FONT_NAME,
+                font_size=MEDIUM, align='center'
+            )
+        )
+        self.main = pyglet.text.layout.TextLayout(
+            doc, WIDTH, 100, multiline=True
+        )
+        self.main.x = WIDTH/2
+        self.main.y = 3*HEIGHT/4
+        self.main.anchor_x = 'center'
+        self.main.anchor_y = 'center'
         self.instructions = Label(
             "(Press enter to continue!)", x=WIDTH/2, y=2*HEIGHT/3,
             font_name=FONT_NAME, font_size=SMALL, anchor_x='center',
@@ -29,6 +41,8 @@ class PaddleSelectState(BaseState):
         self.arrow_left = Sprite(
             resources.frames[ARROWS][0], x=WIDTH/4-24, y=HEIGHT/3
         )
+        self.arrow_left.color = (40, 40, 40)
+        self.arrow_left.opacity = 128
         self.arrow_right = Sprite(
             resources.frames[ARROWS][1], x=3*WIDTH/4, y=HEIGHT/3
         )
@@ -41,7 +55,7 @@ class PaddleSelectState(BaseState):
         self.high_scores = high_scores
 
     def render(self):
-        self.main_label.draw()
+        self.main.draw()
         self.instructions.draw()
         self.paddle.draw()
         self.arrow_left.draw()

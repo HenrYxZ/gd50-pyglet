@@ -5,7 +5,7 @@ import random
 
 
 from ball import Ball
-from constants import *
+from breakout.constants import *
 from level_maker import LevelMaker
 from paddle import Paddle
 from particles import ParticleSettings, ParticleSystem
@@ -55,6 +55,7 @@ class PlayState(BaseState):
         )
         self.particle_system.forces.append(GRAVITY / PIXEL_SIZE)
         self.high_scores = {}
+        self.recover_points = RECOVER_POINTS
 
     def on_key_press(self, symbol):
         if symbol == key.SPACE:
@@ -116,6 +117,12 @@ class PlayState(BaseState):
                 brick.hit()
                 self.score += brick.tier * TIER_MULT + brick.skin * SKIN_MULT
 
+                # Check for health points
+                if self.score > self.recover_points:
+                    self.health = min(MAX_HEALTH, self.health + 1)
+                    self.recover_points *= 2
+                    utils.play(resources[RECOVER])
+
                 if self.check_victory():
                     utils.play(sounds[VICTORY])
                     self.state_machine.change(
@@ -163,6 +170,7 @@ class PlayState(BaseState):
             else:
                 self.state_machine.change(
                     SERVE,
+                    level=self.level,
                     paddle=self.paddle,
                     bricks=self.bricks,
                     health=self.health,
