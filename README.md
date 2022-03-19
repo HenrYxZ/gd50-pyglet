@@ -9,7 +9,7 @@ You can see the course in Edx:
 
 ## Usage
 
-Each project is enclosed in its own folder. To play one of the games just 
+Each project is enclosed on its own folder. To play one of the games just 
 move to the project folder and run the *main* python script.
 
 Ex:
