@@ -2,35 +2,43 @@ import pyglet
 
 
 from constants import *
-
-
-timer = 0
-current_second = 0
+from timer import SingleTimer, Timer
 
 
 window = pyglet.window.Window(WIDTH, HEIGHT, "Match 3")
-label = pyglet.text.Label(
-    x=WIDTH/2, y=HEIGHT/2+SCALE*6, anchor_x='center', anchor_y='center'
-)
-fps_label = pyglet.text.Label(color=COLOR_FPS)
+labels = []
+fps_label = pyglet.text.Label(color=COLOR_FPS, font_size=MEDIUM)
 fps_display = pyglet.window.FPSDisplay(window)
+fps_display.label = fps_label
+
 
 def update(dt):
-    global timer, current_second
-    timer += dt
-    if timer > 1:
-        current_second += 1
-        timer = timer % 1
-    label.text = f"Timer: {current_second} seconds"
+    timer.update(dt)
+    for i, label in enumerate(labels):
+        label.text = f"Timer: {timer.items[i].counter} seconds"
 
 
 @window.event
 def on_draw():
     window.clear()
-    label.draw()
+    for label in labels:
+        label.draw()
     fps_display.draw()
 
 
 if __name__ == '__main__':
+    intervals = [1, 2, 4, 3, 2]
+    n = len(intervals)
+    timer = Timer()
+    for interval in intervals:
+        timer.schedule(interval)
+    for j in range(n):
+        labels.append(
+            pyglet.text.Label(
+                x=WIDTH/2, y=HEIGHT-(70+j*16)*SCALE,
+                anchor_x='center',
+                anchor_y='center'
+            )
+        )
     pyglet.clock.schedule_interval(update, REFRESH_RATE)
     pyglet.app.run()
