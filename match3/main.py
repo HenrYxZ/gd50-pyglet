@@ -1,9 +1,10 @@
 import pyglet
 from pyglet.text import Label
+from random import random, uniform, randrange
 
 
 from constants import *
-from random import random, uniform, randrange
+from timer import Timer
 
 
 window = pyglet.window.Window(WIDTH, HEIGHT, "Match 3")
@@ -14,16 +15,15 @@ fps_display.label = fps_label
 
 TIMER_MAX = 10
 flappy_img = pyglet.image.load("flappy.png")
-timer = 0
 batch = pyglet.graphics.Batch()
+timer = 0
 
 
 def update(dt):
     global timer
     if timer < TIMER_MAX:
         timer += dt
-        for b, r in birds:
-            b.x = min(end_x, (timer / r) * end_x)
+        timer_obj.update(dt)
     label.text = f"{timer:.3f}"
 
 
@@ -38,13 +38,13 @@ def on_draw():
 if __name__ == '__main__':
     end_x = WIDTH - flappy_img.width
     # Create 1000 birds
-    birds = []
     num_birds = 1000
+    timer_obj = Timer()
     for i in range(num_birds):
         x = 0
         y = randrange(HEIGHT-24*SCALE)
         rate = uniform(1, TIMER_MAX)
         bird = pyglet.sprite.Sprite(flappy_img, x=x, y=y, batch=batch)
-        birds.append([bird, rate])
+        timer_obj.tween(rate, bird, {"x": end_x, "opacity": 255})
     pyglet.clock.schedule_interval(update, REFRESH_RATE)
     pyglet.app.run()
