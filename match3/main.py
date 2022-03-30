@@ -15,25 +15,10 @@ fps_display.label = fps_label
 MOVEMENT_TIME = 2
 flappy_img = pyglet.image.load("flappy.png")
 batch = pyglet.graphics.Batch()
-timer = 0
-current_dest_idx = 0
 
 
 def update(dt):
-    global base_x, base_y, current_dest_idx, timer
-    if current_dest_idx == len(destinations):
-        return
-    timer = min(MOVEMENT_TIME, timer + dt)
-    if timer == MOVEMENT_TIME:
-        timer = 0
-        base_x = destinations[current_dest_idx]['x']
-        base_y = destinations[current_dest_idx]['y']
-        current_dest_idx += 1
-
-    else:
-        destination = destinations[current_dest_idx]
-        bird.x = base_x + (destination['x'] - base_x) * (timer / MOVEMENT_TIME)
-        bird.y = base_y + (destination['y'] - base_y) * (timer / MOVEMENT_TIME)
+    timer.update(dt)
 
 
 @window.event
@@ -57,4 +42,12 @@ if __name__ == '__main__':
     base_y = end_y
     bird = pyglet.sprite.Sprite(flappy_img, x=base_x, y=base_y, batch=batch)
     pyglet.clock.schedule_interval(update, REFRESH_RATE)
+    timer = Timer()
+    timer.tween(MOVEMENT_TIME, bird, destinations[0]).finish(
+        lambda: timer.tween(MOVEMENT_TIME, bird, destinations[1]).finish(
+            lambda: timer.tween(MOVEMENT_TIME, bird, destinations[2]).finish(
+                lambda: timer.tween(MOVEMENT_TIME, bird, destinations[3])
+            )
+        )
+    )
     pyglet.app.run()
