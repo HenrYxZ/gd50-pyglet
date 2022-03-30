@@ -13,7 +13,6 @@ class SingleTimer:
             initial_value = getattr(self.target, key)
             self.initials[key] = initial_value
             self.changes[key] = end_value - initial_value
-        print(self.initials)
 
     def update(self, dt):
         if self.ended:
@@ -44,5 +43,5 @@ class Timer:
     def update(self, dt):
         for item in self.items:
             item.update(dt)
-        # for to_delete in [item for item in self.items if item.ended]:
-        #     self.items.remove(to_delete)
+        for to_delete in [item for item in self.items if item.ended]:
+            self.items.remove(to_delete)
