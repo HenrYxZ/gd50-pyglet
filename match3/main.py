@@ -36,26 +36,17 @@ def generate_board():
             x = i * 32
             y = j * 32
             tile = randrange(len(tiles))
+            tile_sprite = pyglet.sprite.Sprite(
+                choice(tiles[tile]),
+                x=x + offset_x,
+                y=y + offset_y,
+                batch=batch,
+                group=background
+            )
             board_tiles[-1].append({
-                "x": x, "y": y, "tile": tile, "grid_x": i, "grid_y": j
+                "x": x, "y": y, "tile": tile_sprite, "grid_x": i, "grid_y": j
             })
     return board_tiles
-
-
-def draw_board():
-    new_sprites = []
-    for row in board:
-        for tile in row:
-            new_sprites.append(
-                pyglet.sprite.Sprite(
-                    choice(tiles[tile['tile']]),
-                    x=tile['x'] + offset_x,
-                    y=tile['y'] + offset_y,
-                    batch=batch,
-                    group=background
-                )
-            )
-    return new_sprites
 
 
 def update(_):
@@ -74,7 +65,6 @@ def on_key_press(symbol, _):
     global highlighted_x, highlighted_y, highlighted_tile, selected_rect, \
         selected_tile
     i, j = selected_tile['grid_x'], selected_tile['grid_y']
-    print(i, j)
     if symbol == key.UP:
         if j < 7:
             selected_tile = board[j + 1][i]
@@ -87,6 +77,41 @@ def on_key_press(symbol, _):
     elif symbol == key.RIGHT:
         if i < 7:
             selected_tile = board[j][i + 1]
+    if symbol == key.ENTER or symbol == key.RETURN:
+        if not highlighted_tile:
+            highlighted_tile = True
+            highlighted_x = selected_tile['grid_x']
+            highlighted_y = selected_tile['grid_y']
+            x = selected_tile['x'] + offset_x
+            y = selected_tile['y'] + offset_y
+            highlighted_rect.position = x, y
+            highlighted_rect.visible = True
+        else:
+            # Swap tiles
+            tile1 = selected_tile
+            tile2 = board[highlighted_y][highlighted_x]
+            temp_x, temp_y = tile2['x'], tile2['y']
+            temp_grid_x, temp_grid_y = tile2['grid_x'], tile2['grid_y']
+            # Change sprites
+            tile2['tile'].x = tile1['x'] + offset_x
+            tile2['tile'].y = tile1['y'] + offset_y
+            tile1['tile'].x = temp_x + offset_x
+            tile1['tile'].y = temp_y + offset_y
+
+            temp_tile = tile1
+            board[tile1['grid_y']][tile1['grid_x']] = tile2
+            board[tile2['grid_y']][tile2['grid_x']] = temp_tile
+
+            tile2['x'], tile2['y'] = tile1['x'], tile1['y']
+            tile2['grid_x'], tile2['grid_y'] = tile1['grid_x'], tile1['grid_y']
+            tile1['x'], tile1['y'] = temp_x, temp_y
+            tile1['grid_x'], tile1['grid_y'] = temp_grid_x, temp_grid_y
+
+            highlighted_tile = False
+            highlighted_rect.visible = False
+            selected_tile = tile2
+
+    # Update selected rectangle
     x = selected_tile['x'] + offset_x
     y = selected_tile['y'] + offset_y
     selected_rect.position = x, y
@@ -100,6 +125,10 @@ if __name__ == '__main__':
         batch=batch, group=ui
     )
     selected_rect.opacity = 234
-    sprites = draw_board()
+    highlighted_rect = pyglet.shapes.Rectangle(
+        0, 0, 32, 32, batch=batch, group=ui
+    )
+    highlighted_rect.opacity = 128
+    highlighted_rect.visible = False
     pyglet.clock.schedule(update)
     pyglet.app.run()
