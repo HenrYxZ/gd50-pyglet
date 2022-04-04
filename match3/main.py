@@ -27,6 +27,8 @@ highlighted_y = 0
 offset_x = 128
 offset_y = 16
 
+timer = Timer()
+
 
 def generate_board():
     board_tiles = []
@@ -49,8 +51,8 @@ def generate_board():
     return board_tiles
 
 
-def update(_):
-    pass
+def update(dt):
+    timer.update(dt)
 
 
 @window.event
@@ -93,10 +95,20 @@ def on_key_press(symbol, _):
             temp_x, temp_y = tile2['x'], tile2['y']
             temp_grid_x, temp_grid_y = tile2['grid_x'], tile2['grid_y']
             # Change sprites
-            tile2['tile'].x = tile1['x'] + offset_x
-            tile2['tile'].y = tile1['y'] + offset_y
-            tile1['tile'].x = temp_x + offset_x
-            tile1['tile'].y = temp_y + offset_y
+            sprite1 = tile1['tile']
+            sprite2 = tile2['tile']
+            timer.tween(
+                0.2,
+                {
+                    sprite2: {
+                        'x': tile1['x'] + offset_x,
+                        'y': tile1['y'] + offset_y
+                    },
+                    sprite1: {
+                        'x': temp_x + offset_x, 'y': temp_y + offset_y
+                    }
+                }
+            )
 
             temp_tile = tile1
             board[tile1['grid_y']][tile1['grid_x']] = tile2
@@ -119,10 +131,11 @@ def on_key_press(symbol, _):
 
 if __name__ == '__main__':
     board = generate_board()
-    selected_tile = board[0][0]
+    selected_tile = board[7][0]
     selected_rect = utils.LineRectangle(
-        offset_x, offset_y, 32, 32, 4, color=(255, 0, 0),
-        batch=batch, group=ui
+        selected_tile['x'] + offset_x,
+        selected_tile['y'] + offset_y,
+        32, 32, 4, color=(255, 0, 0), batch=batch, group=ui
     )
     selected_rect.opacity = 234
     highlighted_rect = pyglet.shapes.Rectangle(

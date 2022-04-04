@@ -3,26 +3,34 @@ class SingleTimer:
     ended = False
     finish_callback = None
 
-    def __init__(self, duration, target, definition):
+    def __init__(self, duration, tasks):
         self.duration = duration
-        self.target = target
-        self.definition = definition
-        self.initials = {}
-        self.changes = {}
-        for key, end_value in self.definition.items():
-            initial_value = getattr(self.target, key)
-            self.initials[key] = initial_value
-            self.changes[key] = end_value - initial_value
+        self.tasks = {}
+        for target, definitions in tasks.items():
+            self.tasks[target] = []
+            for key, end_value in definitions.items():
+                initial_value = getattr(target, key)
+                change = end_value - initial_value
+                self.tasks[target].append({
+                    'key': key,
+                    'initial': initial_value,
+                    'change': change,
+                    'end': end_value
+                })
 
     def update(self, dt):
         if self.ended:
             return
         self.elapsed += dt
         if self.elapsed < self.duration:
-            for key, end_value in self.definition.items():
-                t = self.elapsed / self.duration
-                current_value = self.initials[key] + t * self.changes[key]
-                setattr(self.target, key, current_value)
+            t = self.elapsed / self.duration
+            for target, definitions in self.tasks.items():
+                for task in definitions:
+                    key = task['key']
+                    change = task['change']
+                    initial = task['initial']
+                    current_value = initial + t * change
+                    setattr(target, key, current_value)
         else:
             self.ended = True
             if self.finish_callback:
@@ -35,8 +43,8 @@ class SingleTimer:
 class Timer:
     items = []
 
-    def tween(self, duration, target, definition):
-        new_timer = SingleTimer(duration, target, definition)
+    def tween(self, duration, tasks):
+        new_timer = SingleTimer(duration, tasks)
         self.items.append(new_timer)
         return new_timer
 
