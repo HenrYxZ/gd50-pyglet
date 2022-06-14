@@ -79,6 +79,10 @@ def on_key_press(symbol, _):
     elif symbol == key.RIGHT:
         if i < 7:
             selected_tile = board[j][i + 1]
+    if symbol == key.S:
+        pyglet.image.get_buffer_manager().get_color_buffer().save(
+            'screenshot.png'
+        )
     if symbol == key.ENTER or symbol == key.RETURN:
         if not highlighted_tile:
             highlighted_tile = True

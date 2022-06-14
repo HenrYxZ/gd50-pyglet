@@ -36,3 +36,6 @@ For the projects to work you need to install the modules **pyglet** and
 
 ### Breakout
 ![breakout](breakout/screenshot.png)
+
+### Match3 (Unfinished)
+![match3](match3/screenshot.png)
