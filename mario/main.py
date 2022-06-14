@@ -1,5 +1,6 @@
 import numpy as np
 import pyglet
+from pyglet.window import key
 from pyglet.sprite import Sprite
 
 
@@ -8,15 +9,18 @@ from constants import *
 
 window = pyglet.window.Window(WIDTH, HEIGHT, caption="tiles0")
 batch = pyglet.graphics.Batch()
+keys = key.KeyStateHandler()
+window.push_handlers(keys)
 
 tiles_tex = pyglet.resource.image("tiles.png")
 tiles = pyglet.image.ImageGrid(tiles_tex, 1, 2)
 
 tile_map = []
-map_width = 16
+map_width = 20
 map_height = 9
 background_color = np.random.random_sample(3)
 pyglet.gl.glClearColor(*background_color, 1)
+camera_scroll = 0
 
 # create tile map
 for j in range(map_height):
@@ -36,11 +40,22 @@ for j in range(map_height):
         sprites.append(sprite)
 
 
+def update(dt):
+    global camera_scroll
+    if keys[key.LEFT]:
+        camera_scroll -= CAMERA_SCROLL_SPEED * dt
+    elif keys[key.RIGHT]:
+        camera_scroll += CAMERA_SCROLL_SPEED * dt
+
+
 @window.event
 def on_draw():
     window.clear()
+    pyglet.gl.glTranslatef(int(-camera_scroll), 0, 0)
     batch.draw()
+    pyglet.gl.glTranslatef(int(camera_scroll), 0, 0)
 
 
 if __name__ == '__main__':
+    pyglet.clock.schedule_interval(update, 1 / FPS)
     pyglet.app.run()
