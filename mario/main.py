@@ -52,12 +52,13 @@ character_sprite = Sprite(
 
 
 def update(dt):
-    global camera_scroll
+    global camera_scroll, character_x
     if keys[key.LEFT]:
-        camera_scroll -= CAMERA_SCROLL_SPEED * dt
+        # camera_scroll -= CAMERA_SCROLL_SPEED * dt
+        character_sprite.x -= CHARACTER_MOVE_SPEED * dt
     elif keys[key.RIGHT]:
-        camera_scroll += CAMERA_SCROLL_SPEED * dt
-
+        # camera_scroll += CAMERA_SCROLL_SPEED * dt
+        character_sprite.x += CHARACTER_MOVE_SPEED * dt
 
 @window.event
 def on_draw():
