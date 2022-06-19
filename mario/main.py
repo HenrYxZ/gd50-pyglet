@@ -39,6 +39,17 @@ for j in range(map_height):
         sprite = Sprite(tiles[tile_id - 1], x=x, y=y, batch=batch)
         sprites.append(sprite)
 
+# Create character
+character_sheet = pyglet.resource.image("character.png")
+character_quads = pyglet.image.ImageGrid(character_sheet, 1, 11)
+
+character_x = WIDTH / 2 - CHARACTER_WIDTH / 2
+character_y = 4 * TILE_SIZE
+character_sprite = Sprite(
+    character_quads[0],
+    x=character_x, y=character_y, batch=batch
+)
+
 
 def update(dt):
     global camera_scroll
