@@ -9,7 +9,7 @@ from constants import *
 from fixed_resolution import FixedResolution
 
 
-window = pyglet.window.Window(960, 540, caption="tiles0")
+window = pyglet.window.Window(WIDTH * 3, HEIGHT * 3, caption="tiles0")
 viewport = FixedResolution(window, WIDTH, HEIGHT)
 batch = pyglet.graphics.Batch()
 keys = key.KeyStateHandler()
