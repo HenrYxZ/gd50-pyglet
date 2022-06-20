@@ -4,10 +4,13 @@ from pyglet.window import key
 from pyglet.sprite import Sprite
 
 
+from animation import Animation
 from constants import *
+from fixed_resolution import FixedResolution
 
 
-window = pyglet.window.Window(WIDTH, HEIGHT, caption="tiles0")
+window = pyglet.window.Window(960, 540, caption="tiles0")
+viewport = FixedResolution(window, WIDTH, HEIGHT)
 batch = pyglet.graphics.Batch()
 keys = key.KeyStateHandler()
 window.push_handlers(keys)
@@ -19,7 +22,6 @@ tile_map = []
 map_width = 20
 map_height = 9
 background_color = np.random.random_sample(3)
-pyglet.gl.glClearColor(*background_color, 1)
 camera_scroll = 0
 
 # create tile map
@@ -42,8 +44,18 @@ for j in range(map_height):
 # Create character
 character_sheet = pyglet.resource.image("character.png")
 character_quads = pyglet.image.ImageGrid(character_sheet, 1, 11)
+# adjust character quads to be centered in x
+for img in character_quads:
+    img.anchor_x = CHARACTER_WIDTH / 2
 
-character_x = WIDTH / 2 - CHARACTER_WIDTH / 2
+# two animations
+idle_animation = Animation([0], 1)
+moving_animation = Animation([9, 10], 0.2)
+
+current_animation = idle_animation
+direction = "right"
+
+character_x = WIDTH / 2
 character_y = 4 * TILE_SIZE
 character_sprite = Sprite(
     character_quads[0],
@@ -52,21 +64,36 @@ character_sprite = Sprite(
 
 
 def update(dt):
-    global camera_scroll, character_x
+    global camera_scroll, character_x, current_animation, direction
     if keys[key.LEFT]:
         character_sprite.x -= CHARACTER_MOVE_SPEED * dt
+        direction = "left"
+        current_animation = moving_animation
+        character_sprite.scale_x = -1
     elif keys[key.RIGHT]:
         character_sprite.x += CHARACTER_MOVE_SPEED * dt
+        direction = "right"
+        current_animation = moving_animation
+        character_sprite.scale_x = 1
+    else:
+        current_animation = idle_animation
+        character_sprite.scale_x = 1
 
     camera_scroll = character_sprite.x - WIDTH / 2 - CHARACTER_WIDTH / 2
+    current_animation.update(dt)
 
 
 @window.event
 def on_draw():
-    window.clear()
-    pyglet.gl.glTranslatef(int(-camera_scroll), 0, 0)
-    batch.draw()
-    pyglet.gl.glTranslatef(int(camera_scroll), 0, 0)
+    with viewport:
+        pyglet.gl.glClearColor(*background_color, 1)
+        window.clear()
+        pyglet.gl.glTranslatef(int(-camera_scroll), 0, 0)
+        # update character sprite
+        frame_num = current_animation.get_current_frame()
+        character_sprite.image = character_quads[frame_num]
+        batch.draw()
+        pyglet.gl.glTranslatef(int(camera_scroll), 0, 0)
 
 
 if __name__ == '__main__':
