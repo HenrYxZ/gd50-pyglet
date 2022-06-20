@@ -53,7 +53,7 @@ for img in character_quads:
 # The animations
 idle_animation = Animation([0], 1)
 moving_animation = Animation([9, 10], 0.2)
-jump_animation = Animation([3], 1)
+jump_animation = Animation([2], 1)
 
 current_animation = idle_animation
 direction = "right"
@@ -69,7 +69,7 @@ character_dy = 0
 
 def on_key_press(symbol, _):
     global character_dy, current_animation
-    if symbol == key.SPACE:
+    if symbol == key.SPACE and character_dy == 0:
         character_dy = JUMP_SPEED
         current_animation = jump_animation
     if symbol == key.S:
@@ -96,16 +96,17 @@ def update(dt):
         direction = "left"
         if character_dy == 0:
             current_animation = moving_animation
-        character_sprite.scale_x = -1
+            character_sprite.scale_x = -1
     elif keys[key.RIGHT]:
         character_sprite.x += CHARACTER_MOVE_SPEED * dt
         direction = "right"
         if character_dy == 0:
             current_animation = moving_animation
-        character_sprite.scale_x = 1
+            character_sprite.scale_x = 1
     else:
-        current_animation = idle_animation
-        character_sprite.scale_x = 1
+        if not character_dy:
+            current_animation = idle_animation
+            character_sprite.scale_x = 1
 
     camera_scroll = character_sprite.x - WIDTH / 2 - CHARACTER_WIDTH / 2
 
