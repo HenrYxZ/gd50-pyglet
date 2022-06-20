@@ -39,3 +39,6 @@ For the projects to work you need to install the modules **pyglet** and
 
 ### Match3 (Unfinished)
 ![match3](match3/screenshot.png)
+
+### "Mario" (Work In Progress)
+![mario](mario/screenshot.png)
