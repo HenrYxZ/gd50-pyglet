@@ -7,6 +7,7 @@ from pyglet.sprite import Sprite
 from animation import Animation
 from constants import *
 from fixed_resolution import FixedResolution
+import utils
 
 
 window = pyglet.window.Window(WIDTH * 3, HEIGHT * 3, caption="tiles0")
@@ -71,6 +72,8 @@ def on_key_press(symbol, _):
     if symbol == key.SPACE:
         character_dy = JUMP_SPEED
         current_animation = jump_animation
+    if symbol == key.S:
+        utils.save_screenshot()
 
 
 def update(dt):
