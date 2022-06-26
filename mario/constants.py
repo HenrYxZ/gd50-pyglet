@@ -3,8 +3,9 @@ HEIGHT = 144
 
 TILE_SIZE = 16
 
-GROUND_ID = 3
-SKY_ID = 5
+# Using 1 less in ID than lua, since Python is 0-indexed
+GROUND_ID = 2
+SKY_ID = 4
 
 CAMERA_SCROLL_SPEED = 40
 
